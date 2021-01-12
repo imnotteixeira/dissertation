@@ -1,0 +1,76 @@
+\chapter{Background and Literature Review} \label{chap:sota}
+
+\section*{}
+
+This section will dive deep on previously done work related to this project. Since this is a complete application, there will be a comparison between similar existing applications. Then, there will be an analysis on the specific problems, and how they have been solved in the literature.
+
+\section{Similar platforms}
+On a basic level, this is a sporting-event following app. A similar platform would be 365scores.com \cite{kn:365scores-about}, which offers the following of the same events in real-time, however it does not offer the community-input feature of this proposed work.
+
+Another platform that enables live viewing of sporting events is mycujoo.tv \cite{kn:mycujoo-about}. This one enables the teams themselves to livestream the game with video, and mark specific events as they happen, so that the viewers can revisit those moments in the video. It too lacks the community input feature when inserting the events; it is more geared towards the clubs sharing ability, rather than the fans'. 
+
+This leaves zerozero.live as a singular app that will allow fans to contribute with the games' events in real-time, increasing engagement, which can be complemented with the enormous football-related database which can provide real-time statistics about the game.
+
+
+
+
+\section{Offline Availability}\label{sec:offline-avail-sota}
+
+\section{Conflict resolution}\label{sec:conflict-res-sota}
+
+TODO Creative conflict resolution in realtime collaborative editing systems
+TODO A Consensus-Driven Group Recommender System
+
+\section{Reputation System}\label{sec:rep-sys-sota}
+
+There are multiple examples of how reputation can be used in multi-user systems and how it can affect the group dynamics. Many refer refer to it as a solution to "Group Recommendations", which are based in \textbf{trust} among participants whereas others mention its ability to induce cooperation. Haveliwala, Taher TODO -> cite{Topic-sensitive PageRank} shows how the PageRank algorithm can be personalized so that each link among nodes has a different weight, in order to express a dynamic preference among nodes. Andersen et al. TODO->cite{Trust-based recommendation systems: An axiomatic approach} demonstrates multiple trust-based recommendation systems and how they comply with a set of relevant axioms. Most importantly, it shows how the aforementioned personalized PageRank (PPR) algorithm can be used to simulate a trust network among peers, by linking users with differently weighted connections. The greater the weight, the more a user trusts another, and the most likely it is for the Random Walk algorithm to choose that "path of trust". The latter also shows that PPR satisfies three out of five relevant axioms: \textbf{Symmetry}, \textbf{Positive Response}, \textbf{Transitivity}, but not Independence of Irrelevant Stuff and \textbf{Neighborhood Consensus}.
+\begin{itemize}
+    \item \textbf{Symmetry.} Isomorphic graphs result in corresponding isomorphic recommendations (anonymity), and the system is also symmetric
+    \item \textbf{Positive response.} If a node’s recommendation is 0 and an edge is added to a + voter, then the former’s recommendation becomes +.
+    \item \textbf{Transitivity.} For any graph (N, E) and disjoint sets $ A, B, C \subseteq N $ , for any source s, if s trusts A more than B, and s trusts B more than C, then s trusts A more than C.
+    \item \textbf{Independence of Irrelevant Stuﬀ (IIS).} A node’s recommendation is independent of agents not reach- able from that node. Recommendations are also independent of edges leaving voters.
+    \item \textbf{Neighborhood consensus.} If a nonvoter’s neighbors unanimously vote +, then the recommendation of other nodes will remain unchanged if that node instead becomes a + voter.
+\end{itemize}
+
+Dellarocas, Chrysanthos TODO-> cite {Reputation Mechanisms} shows examples of how multiple platforms handle their user reputations mechanisms. It also states prevention of moral hazard as an objective of reputation systems, as they can deter moral hazard by acting as santioning devices. If the community punishes users with a history of bad behavior and if the punishment exceeds the gains from "cheating", then the threat of public revelation of a user's cheating behavior is an incentive for users to cooperate instead. It further elaborates on the reputation dynamics of a multi-user application: 
+\begin{itemize}
+    \item \textbf{Initial Phase} - In most cases, reputation effects begin to work immediately and in fact are strongest during the initial phase, when users must work hard to establish a reputation. A case where reputation effects may fail to work is when short-run users are “too cautious” when compared to the long-run ones and therefore update their beliefs too slowly in order for the long-run user to find it profitable to try to build a reputation.
+    \item \textbf{Steady state} (or lack thereof) - In their simplest form, reputation games are characterized by an equilibrium in which the long-run player repeatedly plays the safe action, also known as the Stackelberg action, with high probability and the player’s reputation converges to the Stackelberg type (always collaborating and no cheating).
+\end{itemize}
+
+These dynamics have important repercussions for reputation systems. Dellarocas goes on to say that if the entire feedback history of a seller is made available to users and if a colaborator stays on the system long enough, once he establishes an initial reputation for honesty will be tempted to cheat buyers every now and then. In the long term, this behavior will lead to an eventual collapse of his reputation and therefore of cooperative behavior.
+
+Bakos and  Dellarocas TODO->cite{Cooperation Without Enforcement? A comparative analysis of litigation and online reputation as quality assurance mechanisms} presents a model for a reputation system and explores the ability of online reputation mechanisms to efficiently induce cooperation, compared to contractual arrangements relying on the threat of litigation. It concludes that the effectiveness of a reputation mechanism in inducing cooperative behavior has a discontinuous relationship to the frequency of transactions that are affected by this mechanism: A certain degree of participation is required before reputation can induce a significant level of cooperation. Once this threshold is reached, however, the power of reputation springs to life in a discontinuous fashion and high levels of cooperation can be supported.
+
+Dellarocas TODO-> cite{How often should reputation mechanisms update a trader's reputation profile?} concludes that reputation mechanisms can induce higher cooperation and efficiency if, instead of publishing new ratings as soon as they are received, they only update a user's public reputation profile every k transactions with a summary statistic of a user's last ratings. In settings with noise, infrequent updating increases efficiency because it decreases the adverse consequence of spurious negative ratings. At the same time, however, infrequent updating increases a user's short-term profits from cheating and thus the minimum future punishment threat that can sustain cooperation.
+
+In TODO->cite {User’s understanding of reputation issues in a community based mobile app}, tests were made in order to understand the reputation issues for users. These were made in Waze, a GPS-like driving assistant with crowd collaboration for road events. Even though this and zerozero.live are somewhat different, some paralelisms can be made and some gathered information still applies. They concluded that it was hard for users to recognize where the information came from, and if it was reliable at all. Furthermore, users did not care much about their reputation when submitting information (i.e. if they heard about some road event, they would publish it without verifying it), maybe this is somewhat different from our use-case of sporting events, as users are either actually watching the game, or following it from a reliable source. Additionally, when users knew the source of data, they tended to trust people in their close circle (e.g. familly and friends) and the main conclusion is that the app needed to better convey the reputation of the source to let the consumers know how much they can or should trust the source.
+
+Resnick et al. TODO->cite{Reputation Systems} elaborate about reputation systems and their generic importance on the web. It is more geared towards e-commerce examples where people investigate the reputation before interacting with each other. It mentions three important properties reputation systems should have:
+\begin{itemize}
+    \item Long-lived entities that inspire an expectation of future interaction. If the entities are short-lived, their reputation matters little;
+    \item Capture and distribution of feedback about current interactions (such information must be visible in the future);
+    \item Use of feedback to guide trust decisions;
+\end{itemize}
+In the zerozero.live case, it might be hard to get expressive feedback from users regarding other users. Therefore it is important to have some kind of implicit voting in place. Additionally, users are more inclined to express feedback when they disagree than when they agree, which means that the lack of negative feedback must be considered as some sort of positive feedback in order to balance the system. Besides, users won't see the reputation of other users beforehand in order to decide to interact or not, as they simply enter the event without knowing who is also there, so it is important that they can see the reputation, or a variant of it (i.e. some relative reputation based on the current group of users) while they are at the event (e.g. Showing it next to the user's name).
+
+Melnikov A, Lee J Rivera V et al. TODO cite{Towards dynamic interaction-based reputation models} presents a dynamic interaction based reputation model (DIB-RM), which is further evaluated in TODO cite {Expressing Trust with Temporal Frequency of User Interaction in Online Communities}. It presents a method to measure reputation as a function of user interaction frequency, also contemplating a reputation decay if the users stop contributing to the platform. 
+
+The aforementioned method is also present in TODO-> cite{Harnessing wisdom of the crowds dynamics for time-dependent reputation and ranking}, where the authors present a way to harness the "wisdom of the crowds", very much in line with what is required in zerozero.live, since there is no express authority during the event. It presents an example of a document sharing system and the approach to rank the documents based on the amount of readers, the reputation of the author, the time dynamics of reader consumption, and the time dynamics of documents contributed by the user. This last one manifests indirectly, but is still relevant: it means that if a user has less frequent readers on their documents, their reputation will decrease, so the contribution to the main document's reputation - the one they are reading now - will be smaller.
+Reputation values scale between 0 and 1 and it sticks to the following rules:
+\begin{enumerate}
+    \item Every time a user consumes a document from an author, the author gains reputation according to:
+    \[newRep = oldRep + (1 - oldRep) * repReward\]
+    $repReward$ is a constant between 0 and 1 and should consider the number of entities in the system. As the paper states: "If the number of expected consumers is in the order of hundreds or thousands, then an overly high value of $repReward$ will potentially cause popular content to quickly converge towards 1 making it difﬁcult to differentiate between similarly popular content.".
+    \item Every time a user consumes a document, the document gains "reputation" - meaning popularity in this case - according to the same formula of (1):
+    \[newRep = oldRep + (1 - oldRep) * repReward\]
+    \item In order to take time dynamics into account, reputation should decrease over time, so that a "rich-get-richer" paradigm can be avoided. This is achieved by the following equation (both for users and for documents):
+    \[newRep = oldRep * decayCoeff^k\]
+    $decayCoeff$ represents how much the reputation will change, and $k$ is the amount of time units that have passed since the last reputation update, i.e for a time unit of "days", $k$ will be 0 in the first 24h, 1 in the next day, 7 in a week, and so on. This decouples the algorithm from the logistics, since the algorithm can now run in a fixed frequency, independently from the time units, and every time it re-calculates, it will give an accurate value. However, if for example the time unit is "day", and the algorithm updates every week only, there will be an offset of 6 days where the value will be outdated.
+    \item Users with higher reputation matter more when calculating the document reputation changes:
+    \[newRep = oldRep * repConsumer * B\]
+    $B$ is a constant within [0, 1] representing to what extent the user reputation $repConsumer$ will influence the document's reputation.
+
+    This system can be adapted and applied in zerozero.live if we map user inputs in an event as documents. However, we will be ranking users instead of "documents" - inputs - even though they will also have reputation values. This will be explained in more detail in (TODO section explaining rep algorithm according to this - revive the rule numbers there, since they will be referenced).
+    
+\end{enumerate} 

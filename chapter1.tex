@@ -1,0 +1,40 @@
+\chapter{Introduction} \label{chap:intro}
+
+\section*{}
+
+As of today, millions of users follow their teams' games online to keep up-to-date regarding the events of a match \cite{kn:facebook-livestream-stats}. Some of those had a special connection to their hometown team, but since they play in way lower leagues and without much exposure, oftentimes the users end up missing information and losing the passion they once had for the hometown team.
+
+There is a specific group of users, however, that keeps following the games of the smaller teams, and most importantly: sharing updates about them. One platform that allows users to do that, as of today, is zerozero.pt, from ZOS. This enables the most passionate fans that still watch the smaller leagues to share what is going on in the game, reporting the events and building the game's history, totally community-driven. This tool exists and is somewhat outdated, hence the opportunity to build something better.
+
+The goal is to allow multiple users to report the events that happen in a sporting event, which show up for everyone following that match in real-time. As internet connectivity is often poor inside stadiums, the tool must allow offline work, which is synced whenever possible. This can generate many data inconsistencies, which must be handled by the tool.
+
+In the past, work was already done trying to develop such a tool. This project will provide a fresh approach to this problem and the following sections provide more details on the key-objectives of the project. In Chapter \ref{chap:sota}, a comparison between the two projects is present, as well as a \textit{State of the Art} exploration on the multiple scopes of this project.
+
+\section{Offline Availability} \label{sec:offline-avail-intro}
+
+As previously stated, internet connection in stadiums is poor most of the time. Thus, the users must have the option to interact with the application and synchronize once possible. This will obviously lead to data consistency issues (i.e. two users report a goal, changing the result to "1-0" for example, but one of them is offline, so when it finally synchronizes, the result is already "3-2" and it should not overwrite it.)
+
+More information on this and a proposed solution will be stated in Chapter \ref{sec:offline-avail}.
+
+\section{Conflict Resolution} \label{sec:conflict-res-intro}
+
+Another objective of the tool is to provide users with automatic conflict resolution when possible. Some strategies are depicted in the State of the Art section, in Chapter \ref{sec:conflict-res-sota}. Here, it is important to preserve the truth and the most up-to-date versions of data. In this scenario, there might not be a source of truth present to verify and validate all inputs, so other strategies must be used, such as an agreement-based implicit voting - if nobody questions a user's input, it must be true until stated otherwise.
+
+Additionally, different strategies can be used to solve conflicts automatically, thus improving the user experience. More on the proposed solution can be found in Chapter \ref{sec:conflict-res} 
+
+\section{Reputation System} \label{sec:rep-sys-intro}
+
+The third key-objective of the application will be the reputation system. Currently, there already exists a ranking concept, as well as a "trusted" user, which is the equivalent to the maximum reputation and should be considered as the source of truth in case of conflict.
+
+But what about the cases where two "non-trusted" users' inputs conflict, or even the case of two "trusted" users? Who should win? To resolve conflicts, an answer to these \textit{conundrums} is fundamental. Ergo a new reputation system is required, and more details are available in Chapter \ref{sec:rep-sys}.
+
+\section{Summary} \label{sec:summary-intro}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Mauris sem risus tempus a elit Chapter~\ref{chap:sota}.
+Proin in mauris varius, auctor eros eu, accumsan est.
+Suspendisse molestie elit in lacinia iaculis Chapter~\ref{chap:chap3}.
+Sed lobortis sem non metus pharetra efficitur. Mauris tortor arcu,
+pulvinar sit, molestie vitae libero Chapter~\ref{chap:chap4}.
+In odio felis, consectetur vel rhoncus et, iaculis et nisi.
+Suspendisse rutrum felis magna Chapter~\ref{chap:concl}.

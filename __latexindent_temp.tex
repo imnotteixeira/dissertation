@@ -1,0 +1,32 @@
+\chapter{Background and Literature Review} \label{chap:sota}
+
+\section*{}
+
+This section will dive deep on previously done work related to this project. Since this is a complete application, there will be a comparison between similar existing applications. Then, there will be an analysis on the specific problems, and how they have been solved in the literature.
+
+\section{Similar platforms}
+On a basic level, this is a sporting-event following app. A similar platform would be 365scores.com \cite{kn:365scores-about}, which offers the following of the same events in real-time, however it does not offer the community-input feature of this proposed work.
+
+Another platform that enables live viewing of sporting events is mycujoo.tv \cite{kn:mycujoo-about}. This one enables the teams themselves to livestream the game with video, and mark specific events as they happen, so that the viewers can revisit those moments in the video. It too lacks the community input feature when inserting the events; it is more geared towards the clubs sharing ability, rather than the fans'. 
+
+This leaves zerozero.live as a singular app that will allow fans to contribute with the games' events in real-time, increasing engagement, which can be complemented with the enormous football-related database which can provide real-time statistics about the game.
+
+
+
+
+\section{Offline Availability}\label{sec:offline-avail-sota}
+
+\section{Conflict resolution}\label{sec:conflict-res-sota}
+
+\section{Reputation System}\label{sec:rep-sys-sota}
+
+There are multiple examples of how reputation can be used in multi-user systems and how it can affect the group dynamics. Many refer refer to it as a solution to "Group Recommendations", which are based in \textbf{trust} among participants. Andersen et al. TODO->cite{Trust-based recommendation systems: An axiomatic approach} demonstrates multiple trust-based recommnedation systems and how they comply, or not, with a set of relevant axioms. Most importantly, it shows how a personalized PageRank (PPR) algorithm can be used to simulate a trust network among peers, by linking users with differently weighted connections. The greater the weight, the more a user trusts another, and the most likely it is for the Random Walk algorithm to choose that "path of trust". As it is explained, PPR satisfies three out of five relevant axioms: Symmetry, Positive Response, Transitivity, but not Independence of Irrelevant Stuff and Neighborhood Consensus.
+\begin{itemize}
+    \item \textbf{Symmetry.} Isomorphic graphs result in corresponding isomorphic recommendations (anonymity), and the system is also symmetric
+    \item \textbf{Positive response.} If a node’s recommendation is 0 and an edge is added to a + voter, then the former’s recommendation becomes +.
+    \item \textbf{Transitivity.} For any graph (N, E) and disjoint sets $$ A, B, C \subseteq N $$ , for any source s, if s trusts A more than B, and s trusts B more than C, then s trusts A more than C.
+    \item \textbf{Independence of Irrelevant Stuﬀ (IIS).} A node’s recommendation is independent of agents not reach- able from that node. Recommendations are also independent of edges leaving voters.
+    \item \textbf{Neighborhood consensus.} If a nonvoter’s neighbors unanimously vote +, then the recommendation of other nodes will remain unchanged if that node instead becomes a + voter.
+\end{itemize}
+
+
