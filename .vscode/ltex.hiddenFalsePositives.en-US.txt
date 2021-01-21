@@ -3,3 +3,5 @@
 {"rule":"LC_AFTER_PERIOD","sentence":"^\\QThe aforementioned method is also present in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, where the authors present a way to harness the \"wisdom of the crowds\", very much in line with what is required in zerozero.live, since there is no express authority during the event.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QMelnikov, Lee, Rivera et al. \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q presents a dynamic interaction based reputation model (DIB-RM), which is further evaluated in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QResnick et al. \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q elaborate about reputation systems and their generic importance on the web.\\E$"}
+{"rule":"MISSING_GENITIVE","sentence":"^\\QHTTP protocol example interactions\\E$"}
+{"rule":"SENTENCE_FRAGMENT","sentence":"^\\QAs can be seen in Fig.\\E$"}
