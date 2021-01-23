@@ -24,9 +24,72 @@ TODO
 * web (arch)
 * real time (sockets?)
 * relevant technologies
+* localstorage (vs cookies comparison?) for offline mode
 * pagerank, parallelism to reputation system
 
 \section{Offline Availability}\label{sec:offline-avail-sota}
+
+As stated in \cite{Mark2008}, even though people complete interrupted tasks in less time with no quality drop, these conditions make users work faster in order to compensate for it, increasing stress and frustration. The lack of offline interaction would force users to interrupt their task of inputting the desired information. That would increase stress when adding it later once they connect again, as they would try to do it fast while that information still has relevance. Indeed, \cite{Marco2015} tested a real-world application in both scenarios - with offline mode and without it - for which the basic version obtained a user satisfaction score of 66.5, whereas the offline-tolerant version had a score of 95.5, out of 100, proving that having an offline mode improves substantially the user experience in a web application. 
+
+Marco \cite{Marco2013} exposes the interrupted internet connectivity problem applied to e-learning applications. It proposes the creation of a modeling tool to create interruption-resilient web applications, by defining the possible operations and how they should behave in case of interruption. This model is presented later in \cite{Abertos-Marco2017}. It presents the Offline Model, defining a taxonomy for interruptions on web applications. It further analyzes some properties of web applications in the presence of interruptions such as scheme and offline support, which depend on the application and the task being performed within it.
+
+Marco \cite{Marco2015} further specifies rules regarding the adaptation of basic web applications into offline-tolerant ones. On the \textit{Application Domain Level}, the data model of the application should not be modified so as to support as many applications as possible; On the \textit{Hypertext Level}, the navigation on the application could be slightly modified or adapted, regarding pages within the web application, depending on the connectivity status; On the \textit{Presentation Level}, the user interface should be adapted according to policies specific to each page element as the interaction with those elements would change depending on the connectivity status.
+
+It is, therefore, necessary to establish which components of the web application will be available in offline mode, and how.
+To specify the navigation, they propose the notation presented by Albertos et al. \cite{Penichet2013}, representing the web pages as nodes, with edges meaning navigation withing the web application. Each node has attributes referring to policies about the behavior of the components in offline mode, as well as the mechanism to create the local copy. To specify the interface behavior in offline mode, the following policies are described:
+
+\begin{itemize}
+    \item \textbf{Hide}: The element should be hidden, preventing user interaction
+    \item \textbf{Disable}: The element should be shown, but interaction should not be possible
+    \item \textbf{Save}: Save elements locally so that they can be accessed in offline mode (such as images or text documents)
+    \item \textbf{Update}: For elements that can be interacted with when in offline mode, they should be updated - synchronized - when connectivity is regained
+\end{itemize}
+
+Yang \cite{Yang2000} presents a mechanism to support offline collaborative work in a web application. Due to the age of the document, most of the used tools are now obsolete, but the general ideas still apply. It proposes the existence of local storage to every client, so that operations done in offline mode are kept. Then, once the user comes back online, the work saved in the local storage is synchronized with the online storage, where conflict-resolution algorithms take place in order to minimize said conflicts.
+
+Kleppmann, Wiggins, Hardenberg et al. \cite{Kleppmann2019} proposes ideals for local-first software, local-first software being the idea that the data on users' local machines is the primary when compared to servers, not the other way around, as it often happens in web applications:
+
+\begin{enumerate}
+    \item \textbf{"No spinners" / No loading}: Data is changed locally, and synchronization occurs quietly in the background;
+    \begin{itemize}
+        \item A workaround pattern is mentioned - Optimistic UI - which consists of showing the changes immediately, while sending them to the server, which would need to be reverted in case of error, for example
+    \end{itemize}
+    \item \textbf{Multi-device support}: Users should be able to work everywhere;
+    \item \textbf{Optional network}: Since local-first applications store the primary copy of their data in each device’s local file system, the user can read and write this data anytime, even while offline. It is then synchronized with other devices sometime later, when a network connection is available;
+    \item \textbf{Seamless Collaboration}: Real-Time collaboration should be possible with conflict resolution when necessary;
+    \item \textbf{Data Forever}: The data is independent of the company or service provider, since it is stored locally. It should therefore last forever;
+    \item \textbf{Secure and Private by default}: By having the data on each user's device locally, database tampering is not as harmful, as you'll have many backed up replicas. Moreover, by using end-to-end encryption, the server can only save encrypted data, thus making it private, as it can only be decrypted by the users who are allowed to do so;
+    \item \textbf{Ownership}: The user owns the data, the provider cannot block the access in any form since the data is local.
+\end{enumerate}
+
+It further compares multiple applications in the way they handle the local-first ideals, such as Files and Email attachments, or Google Docs \footnote{https://www.google.com/docs/about/} as well as technologies to implement said ideals, such as Web Applications, Mobile Applications, CouchDB \cite{couchdb} - a multi-master database that allows each node to mutate the database and synchronize the changes with other nodes, meant to run on servers - and PouchDB \cite{pouchdb} - with the same goal of CouchDB, but meant to run on the end user devices.
+
+Also mentions CRDT (Conflict-Free Replicated Data Types) as a foundational technology to achieve the local-first ideals. CRDT are general-purpose data structures similar to the common lists and maps but built for multi-user environments from the beginning. CRDT merge changes from multiple users when possible, however it does not handle changes to the same element in the structure, in that case it keeps track of the conflicts for the application to deal with them, allowing for custom conflict resolution techniques. CRDT are generic enough that they can synchronize over any communication connection like server, peer-to-peer networks, Bluetooth, and others. The paper further presents \textit{Automerge} \footnote{https://github.com/automerge/automerge} as a JavaScript CRDT implementation.
+
+Furthermore, the authors built some prototypes using Electron, JavaScript and React using CRDT to verify that its usage was already viable in order to build local-first software for the web and desktop applications. The main conclusions were that CRDT worked reliably, while integrating easily with the other tools and seamlessly merging data. Also, they verified that the user experience was splendid, as it allowed for offline work and sync when possible, giving the feeling of "data ownership" to the user. Finally, they state that this technology combines well with Functional Reactive Programming (FRP), a paradigm which renders the view based on a function that receives data. If the data changes, it "reacts" and redraws. A popular framework using this model is React, but there are others such as Vue.js or Flutter. With such a tool, by syncing the data with a CRDT and reacting to the changes in terms of UI, a real-time experience is easily achieved.
+
+Finally, it added that CRDT might have a performance problem if used to same many changes (since they essentially save all the history). That is something that must be taken into account when using that technology and designing the system.
+
+Zawirski, Preguiça, Duarte et al. \cite{Zawirski2015} proposes a way of supporting many client-side applications sharing a database of objects that they can read and update under a convergent causal consistency model, with support for application-specific conflict resolution. It relies on fast local writes and possibly stale data reads, in order to achieve better speeds. It allows updates to thousands of clients using only three data centers, leveraging client buffering and controlled staleness, absorbing the cost of scalability, availability and consistency.
+
+Kao, Lin, Yang et al. \cite{Kao2012} proposes a system to allow mobile applications to run in a web container, joining the benefits of both: being able to run offline and cross-platform.
+
+In order to make it possible for users to work while they are not connected to the internet, there must be a way of storing their actions locally, so that they can be synchronized when they regain internet connectivity. Currently, HTML5 exposes multiple local storage APIs which can be used for this effect.
+
+Liu \cite{Liu2014} discusses multiple web client storage technologies, comparing their advantages and disadvantages:
+\begin{itemize}
+    \item \textbf{Cookies}: Small piece of data that is included in every HTTP request (limit of 4 KB per cookie \cite{cookies-rfc}). They can be managed by the server as well as the client and are mostly used to keep state in between HTTP requests, for use cases such as user sessions or keeping track of some user activity. They are very popular and widely used, but at the same time they have little capacity and can be insecure, due to their presence in the HTTP communication with the server \cite{Velagapudi2019} \cite{Kwon2020};
+    \item \textbf{localStorage}: Can be used to implement cross-page communication (in the same domain) by storing data and having the web application listen for storage events, all pages of the same domain will have the updated data in the respective section of \textit{localStorage}. It can be faster than cookies since no interaction with the server is needed.
+    The data is stored in key-value pairs and is partitioned by domain, with no risk of inter-domain data corruption. It can be read and modified using JavaScript and all values are strings.
+    \item \textbf{sessionStorage}: Works in the exact same way as \textit{localStorage}, but the data only lasts until the browser is closed, i.e. the session;
+    \item \textbf{UserData}: Older technology, specific to Internet Explorer, and has since been deprecated, it had only 128 KB of capacity;
+    \item \textbf{Web SQL Databases}: Uses SQL format to store the local data. In Google Chrome, it uses the SQLite DB. The interactions are made as it were a normal SQL database running, by using the $executeSql()$ or $transaction()$ APIs. Not supported by all browsers and not part of W3C standard \cite{WebSQL-storage-w3c};
+    \item \textbf{Indexed Database}: Uses a NoSQL DB to store the data. Event-based so it is asynchronous by default. It might be helpful to use a Promise-based wrapper \cite{promises-js-mdn} such as idb \footnote{https://www.npmjs.com/package/idb}.
+\end{itemize}
+It further concludes that \textit{localStorage} is the most compatible among web browsers. In summary, for session id tracking or for small data storage, one should use \textit{Cookies}; Up to 5 MB, \textit{localStorage} delivers a solution across all common browsers \cite{webstorage-w3c}; For more space, \textbf{Indexed Database} is recommended.
+
+Jemel and Serhrouchni \cite{Jemel2014} presents some vulnerabilities that can arise from using the HTML5 Local Storage API as is. It also introduces a way of securing data stored using the local storage API, based on the user, not only the domain the data belongs to.
+
 
 \section{Conflict resolution}\label{sec:conflict-res-sota}
 
