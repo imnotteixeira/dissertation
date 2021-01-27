@@ -64,7 +64,7 @@ Kleppmann, Wiggins, Hardenberg et al. \cite{Kleppmann2019} proposes ideals for l
 
 It further compares multiple applications in the way they handle the local-first ideals, such as Files and Email attachments, or Google Docs \footnote{https://www.google.com/docs/about/} as well as technologies to implement said ideals, such as Web Applications, Mobile Applications, CouchDB \cite{couchdb} - a multi-master database that allows each node to mutate the database and synchronize the changes with other nodes, meant to run on servers - and PouchDB \cite{pouchdb} - with the same goal of CouchDB, but meant to run on the end user devices.
 
-Also mentions CRDT (Conflict-Free Replicated Data Types) as a foundational technology to achieve the local-first ideals. CRDT are general-purpose data structures similar to the common lists and maps but built for multi-user environments from the beginning. CRDT merge changes from multiple users when possible, however it does not handle changes to the same element in the structure, in that case it keeps track of the conflicts for the application to deal with them, allowing for custom conflict resolution techniques. CRDT are generic enough that they can synchronize over any communication connection like server, peer-to-peer networks, Bluetooth, and others. The paper further presents \textit{Automerge} \footnote{https://github.com/automerge/automerge} as a JavaScript CRDT implementation.
+It also mentions CRDT (Conflict-Free Replicated Data Types) as a foundational technology to achieve the local-first ideals. As explained in the next section,  CRDT are general-purpose data structures similar to the common lists and maps but built for multi-user environments from the beginning. CRDT merge changes from multiple users when possible, however it does not handle changes to the same element in the structure, in that case it keeps track of the conflicts for the application to deal with them, allowing for custom conflict resolution techniques. CRDT are generic enough that they can synchronize over any communication connection like server, peer-to-peer networks, Bluetooth, and others. The paper further presents \textit{Automerge} \footnote{https://github.com/automerge/automerge} as a JavaScript CRDT implementation.
 
 Furthermore, the authors built some prototypes using Electron, JavaScript and React using CRDT to verify that its usage was already viable in order to build local-first software for the web and desktop applications. The main conclusions were that CRDT worked reliably, while integrating easily with the other tools and seamlessly merging data. Also, they verified that the user experience was splendid, as it allowed for offline work and sync when possible, giving the feeling of "data ownership" to the user. Finally, they state that this technology combines well with Functional Reactive Programming (FRP), a paradigm which renders the view based on a function that receives data. If the data changes, it "reacts" and redraws. A popular framework using this model is React, but there are others such as Vue.js or Flutter. With such a tool, by syncing the data with a CRDT and reacting to the changes in terms of UI, a real-time experience is easily achieved.
 
@@ -93,8 +93,88 @@ Jemel and Serhrouchni \cite{Jemel2014} presents some vulnerabilities that can ar
 
 \section{Conflict resolution}\label{sec:conflict-res-sota}
 
-TODO Creative conflict resolution in realtime collaborative editing systems
-TODO A Consensus-Driven Group Recommender System
+Conflict resolution is a problem that has been studied extensively in the literature, with publications dating as far back as 1986 \cite{Greif1986}, but it was not until 1989 that the first algorithm was proposed to deal with this problem, by Ellis and Gibbs \cite{Ellis1989}.
+
+In that paper, they define groupware systems as multi-user (i.e. composed of two or more users) computer systems that allow development on a common task, providing an interface to a shared environment. Then, they propose an algorithm to solve the groupware real-time concurrency problem called \textbf{Operational Transformation (OT)} which allows concurrent editing without the need for locks, increasing responsiveness. \textit{Response time} is defined as the time required for the user's action to be reflected on their screen. \textit{Notification time} is defined as the time required for the user's action to be propagated to all other participants.
+
+Real-time groupware systems have the following characteristics:
+
+\begin{itemize}
+    \item \textbf{Highly interactive}: Short response times;
+    \item \textbf{Real-time}: Notification times should be close to the response times;
+    \item \textbf{Distributed}: They should work even if the participants are connected in different machines and networks on the internet;
+    \item \textbf{Volatile}: Participants may enter and leave the session at any time;
+    \item \textbf{\textit{Ad Hoc}}: Participants don't follow a script, it is therefore impossible to know what is the information they are trying to access beforehand;
+    \item \textbf{Focused}: Generally users will be trying to access the same data, generating a high degree of access conflicts;
+    \item \textbf{External Channel}: Participants are often connected among them via an external channel such as an audio or video communication tool;
+\end{itemize}
+
+A groupware system model is then defined as being formed by a set of sites and operators. Sites consist of a site process (i.e. a user's unique session), a site object (i.e. the data being read and modified), and a unique site identifier. Operators are the set of operations available for users to apply to the site objects. The goal is to maintain consistency among all the site objects at all times. The site process performs three kinds of activities: \textbf{operation generation}, where the user generates an operation to be applied to the site objects. The site will then encapsulate the action in an operation request to be broadcasted to all other sites; \textbf{operation reception}, where an operation is received from another site; \textbf{operation execution}, where an operation is executed on the local site object. The model further assumes that the number of sites is constant, messages are received exactly once, without error, and that it is impossible to execute an action before it is generated.
+
+The paper further specifies the following definitions regarding the groupware system:
+
+\begin{itemize}
+    \item Given two operations $a$ and $b$, generated at sites 1 and 2, respectively, $a$ precedes $b$ iff:
+    \begin{itemize}
+        \item $a = b$ and the generation of $a$ happened before the generation of $b$, or
+        \item $a \neq b$ and the execution of $a$ on site 2 happened before the generation of $b$;
+    \end{itemize}
+    \item The \textbf{Precedence Property} states that if an operation $a$ precedes another operation $b$, then at every site the execution of $a$ happens before the execution of $b$;
+    \item A groupware session is \textbf{quiescent} iff all generated operations have been executed at all sites;
+    \item The \textbf{Convergent Property} states that site objects are identical at all sites at quiescence;
+    \item A groupware system is \textit{correct} iff the \textbf{Convergent Property} and the \textbf{Precedence Property} are always satisfied.
+\end{itemize}
+
+The proposed algorithm uses four auxiliary data structures: State vector, Request, Request Queue, Request Log and a predefined, semantics-based matrix of transformations. 
+
+\textit{State Vectors} are based on the partial ordering definition in \cite{Lamport1978} and the concept of vector clocks in \cite{Liskov1986} and \cite{Fidge1988}, stores the amount of operations done per site, i.e.e the $i$'th component of the vector represents how many operations from site $i$ have been executed in the current site. It is therefore possible to compare two state vectors $s_i$ and $s_j$:
+\begin{itemize}
+    \item $s_i = s_j$ if each component of $s_i$ is equal to the corresponding component in $s_j$;
+    \item $s_i < s_j$ if each component of $s_i$ is less than equal to the corresponding component in $s_j$ and at least one component of $s_i$ is less than the corresponding component in $s_j$;
+    \item $s_i > s_j$ if at least one component of $s_i$ is greater than the corresponding component in $s_j$;
+\end{itemize}
+
+\textit{Requests} are tuples in the form $<i,s,o,p>$ where $i$ is the originating site's identifier, $s$ the originating site's state vector, $o$ is the operation and $p$ is the priority associated with $o$.
+From the request state vector, a site can determine if the operation to execute can be executed immediately, or wait for needed updates from other sites, enforcing the precedence property. The \textit{Request Queue} is a list of requests pending execution. Even thought the term "queue" is used, it does not imply first-in-first-out order. The \textit{Request Log} stores at site $i$ the executed requests at that site, in insertion order.
+
+The Transformation Matrix defines for every operation type pair a function $T$, that transforms operations so that given two operations $o_i$ and $o_j$, with priorities $p_i$ and $p_j$, instances of operators $O_u$ and $O_v$, respectively and
+\begin{equation*}
+    o'_j = T_{uv}(o_j, o_i, p_j, p_i)
+\end{equation*}
+\begin{equation*}
+    o'_i = T_{vu}(o_i, o_j, p_i, p_j)
+\end{equation*}
+then $T$ is such that
+\begin{equation*}
+    o'_j \circ o_i = o'_i \circ o_j
+\end{equation*}
+$\circ$ meaning composition of operations.
+
+The algorithm has an initialization section, a generation section, a reception section, and an execution section.
+In the initialization section, the site's log and request queue are set to empty, and the state vector is initialized with all values being 0, since no operations have been done. The next section specifies that whenever a local operation is received, a request is formed, and it is added to the local queue and broadcasted to other sites. In the receiving section, when a request is received, it is simply added to the request queue. Finally, the execution section specifies how to apply the operations, handling conflicts. First, it checks the request queue to retrieve any request (with state $s_j$) that can be executed, $s_i$ being the state in the local site $i$ and there are three possibilities:
+
+\begin{enumerate}
+    \item $s_j > s_i$: The request cannot be executed since there are changes done in site $j$ that were not executed yet at site $i$, therefore the request must be left in the queue for later execution;
+    \item $s_j = s_i$: The two states are equal, therefore the request can be executed immediately without operation transformation
+    \item $s_j < s_i$: The request can be executed, but the operation must be transformed, since site $i$ has executed requests that are preceded by request $j$, $r_j$. Site $i$'s log $L_i$ is examined for requests that were not accounted for by site $j$ (i.e. the requests that were executed in $i$ but not on $j$ prior to the generation of $r_j$. Each such request is then used to transform $o_j$ in $o'_j$, according to the Transformation Matrix. $o'_j$ is then executed and the state vector is incremented.
+\end{enumerate}
+
+Some changes were later proposed to the state vector technique \cite{Landes2006} \cite{Almeida2008} to allow dynamic entries, instead of a constant number of concurrent participants. Ellis and Gibbs \cite{Ellis1989} mentioned this in the OT definition and addressed it noting that participants can enter and leave every time the system is quiescent, since the Request Logs can be reset, and it should function like a checkpoint on each site.
+
+Nichols, Curtis et al. \cite{Nichols1995} build another algorithm on top of the existing OT, presented in \cite{Ellis1989} that uses a server managing the collaboration, instead of being peer-to-peer like the former. This reduces the need for the request priority fields in the requests for tie-breaking, since the server can use a different strategy such as a reputation system, which the next section will develop upon. By removing the need for multicasting, since the server orchestrates the process and the communication is done in server-client pairs only, there is no need for message reordering logic, since a message transport protocol such as TCP \cite{tcpprotocol} can be used instead, ensuring message delivery in the correct order before reaching the application layer, reducing the clients' workload.
+
+Over the years, more implementations were published each with their own advantages and compromises, but for the sake of keeping the focus of this document in a more general view of existing alternatives, I redirect the reader to OT Wikipedia article which has a good summary table \footnote{https://en.wikipedia.org/wiki/Operational\_transformation\#OT\_control\_(integration)\_algorithms} of most of the alternatives and their characteristics. Additionally, Sun, Chengzheng provides a FAQ page \footnote{https://www3.ntu.edu.sg/scse/staff/czsun/projects/otfaq/\#\_Toc321146200} serving as a knowledge base about the topic. This being a popular algorithm, there are many tools that implement it and can be included in an application, such as TogetherJS \footnote{https://togetherjs.com}, based around what they call the hub: a server that everyone in the session connects to which echoes messages to all the participants using WebSockets, or ShareDB \footnote{https://github.com/share/sharedb}, a real-time database backend supporting OT. The default implementation of ShareDB is an in-memory, non-persistent database with no queries. It is possible, however, to create connectors for other databases and connectors are provided for MongoDB\footnote{https://www.mongodb.com/} and PostgreSQL \footnote{https://www.postgresql.org/}.
+
+ShareDB is horizontally scalable using a publish and subscribe mechanism, making it relatively future-proof. Since it uses Express for the server it is possible to use middleware to hook into the server pipeline and modify objects as they pass through ShareDB, adding flexibility.
+
+Conflict-free Replicated Data Types (CRDT) are a different approach to the real-time coordination of inputs problem in a groupware system \cite{Shapiro2011}. They can be operation-based \cite{Letia2010} \cite{Baquero2014}, similar to OT, or state-based \cite{Baquero1999} \cite{Almeida2014}.
+
+Operation-based CRDT are also called commutative replicated data types, or CmRDTs. CmRDT replicas propagate state by transmitting only the update operation, similarly to OT. Replicas receive the updates and apply them locally. The operations are commutative. However, they are not necessarily idempotent. The communications' infrastructure must therefore ensure that all operations on a replica are delivered to the other replicas, without duplication, but in any order.
+
+State-based CRDT are called convergent replicated data types, or CvRDTs. In contrast to CmRDTs, CvRDTs send their full local state to other replicas, where the states are merged by a function that must be commutative, associative, and idempotent. The merge function provides a join for any pair of replica states, so the set of all states forms a \textit{semilattice}. The update function must monotonically increase the internal state, according to the same partial order rules as the \textit{semilattice}. Kleppmann, Martin provides good presentations\footnote{https://www.infoq.com/presentations/crdt-distributed-consistency/} \footnote{https://gotocon.com/berlin-2016/presentations/show\_talk.jsp?oid=7910} on the CRDT topic. Similarly to OT, CRDT also has available libraries and tools to be used in applications. Riak\footnote{https://riak.com/introducing-riak-2-0/} is a distributed NoSQL key-value data store based on CRDT. Bet365 is an example of a large system using Riak\footnote{https://bet365techblog.com/riak-update}. Another example of CRDT implementation is Facebook's Apollo database\footnote{https://dzone.com/articles/facebook-announces-apollo-qcon}, showing that CRDT can be used at scale as well.
+
+A third and more recent alternative to the conflict resolution problem is Differential Synchronization \cite{Fraser2009} \cite{Fraser-diff-sync-web}. It provides an alternative to OT, being an algorithm that is symmetrical, as it has nearly identical code in both client and server; state-based, thus not requiring a history of edits to be kept by clients; asynchronous, since it does not block user input while waiting for the response over the network; network resilient, convergent, suitable for any content for which semantic diff and patch algorithms exist; and highly scalable. A working example of this algorithm can be seen in MobWrite\footnote{https://code.google.com/archive/p/google-mobwrite/}.
+    
 
 \section{Reputation System}\label{sec:rep-sys-sota}
 
