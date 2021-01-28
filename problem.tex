@@ -10,15 +10,20 @@ As mentioned in the Introduction (Chapter \ref{chap:intro}), the goal of the pro
 
 Due to the above goal, some necessary features start to surface such as real-time conflict resolution and the inherent reputation system for tie-breaking when necessary. 
 
-A prototype that allows event submission is already available, and since it is using React, and it is an appropriate technology for this task, it will be kept. Some features still need to be polished, but most of the UI is already done, which will allow a bigger focus on the actual real-time conflict resolution problem.
-
-The features are described as follows, in User Story format\footnote{In software development and product management, a user story is an informal, natural language description of one or more features of a software system. User stories are often written from the perspective of an end user or user of a system.}:
+A prototype that allows event submission is already available, and since it is using React, and it is an appropriate technology for this task, it will be kept. Some features still need to be polished, but most of the UI is already done, which will allow a bigger focus on the actual real-time conflict resolution problem. The features are described as follows, in User Story format\footnote{In software development and product management, a user story is an informal, natural language description of one or more features of a software system. User stories are often written from the perspective of an end user or user of a system.}:
 
 \begin{itemize}[leftmargin  = 3.25\parindent, align=left]
-    \item[US01] User story 1
-    \item[US02] User story 2
-    \item[US03] User story 3
-    \item[US03asdadasds] User story 3
+    \item[US01] As a user, I want to be able to join a sport event channel, where I can see details about the event in real-time (either pre-filled or contributed by other users)
+    \item[US02] As a user, I want to be able to be able to post event updates while on an event channel, in a chat-like interaction
+    \begin{itemize}
+        \item Event updates include: Starting players, Goals, Fouls, Set-Pieces, Cards, Substitutions
+    \end{itemize} 
+    \item[US03] As a user, I want to be able to use the application while in offline mode, and have it synchronize once the connection is resumed
+    \item[US04] As a user, I want to see a value representing the reputation of other users in a given event channel
+    \item[US05] As a user, I want to be able to report inputted events as false
+    \item[US06] As a user, I want to be able to see if there are any pending conflicts to be resolved
+    \item[US07] As a user, I want to be able to resolve any pending conflicts
+    \item[US08] As a user, I want to be able to join an event channel mid-session, being able to see the previous information
 \end{itemize}
 
 TODO
