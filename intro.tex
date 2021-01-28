@@ -8,25 +8,25 @@ There is a specific group of users, however, that keeps following the games of t
 
 The goal is to allow multiple users to report the events that happen in a sporting event, which show up for everyone following that match in real-time. As internet connectivity is often poor inside stadiums, the tool must allow offline work, which is synced whenever possible. This can generate many data inconsistencies, which must be handled by the tool.
 
-This project will provide an approach to this problem and the following sections provide more details on the key-objectives of the project. In Chapter \ref{chap:sota}, a comparison with a similar project is made, as well as a \textit{State of the Art} exploration on the multiple scopes of this project.
+This project will provide an approach to this problem and the following sections provide more details on the key-objectives of the project. In Chapter \ref{chap:sota}, a comparison with a similar project is made, as well as a \textit{State of the Art} exploration on the multiple scopes of this project. Chapters \ref{chap:problem} and \ref{chap:problem-solution} define the problem and propose solutions for it, respectively. Conclusions are present in Chapter \ref{chap:concl}. 
 
 \section{Offline Availability} \label{sec:offline-avail-intro}
 
-As previously stated, internet connection in stadiums is poor most of the time. Thus, the users must have the option to interact with the application and synchronize once possible. This will obviously lead to data consistency issues (i.e. two users report a goal, changing the result to "1-0" for example, but one of them is offline, so when it finally synchronizes, the result is already "3-2" and it should not be overwritten.)
+As previously stated, internet connection in stadiums is poor most of the time. Thus, the users must have the option to interact with the application and synchronize once possible. This will obviously lead to data consistency issues (i.e. two users report a goal, changing the result to \say{1-0} for example, but one of them is offline, so when it finally synchronizes, the result is already \say{3-2} and it should not be overwritten.)
 
-More information on this and a proposed solution will be stated in Chapter \ref{sec:offline-avail}.
+More information on this topic is presented in Section \ref{sec:offline-avail-sota} and a proposed solution will be stated in Section \ref{sec:prob-solution-offline-avail}.
 
 \section{Conflict Resolution} \label{sec:conflict-res-intro}
 
 Another objective of the tool is to provide users with automatic conflict resolution when possible. Some strategies are depicted in the State of the Art section, in Chapter \ref{sec:conflict-res-sota}. Here, it is important to preserve the truth and the most up-to-date versions of data. In this scenario, there might not be a source of truth present to verify and validate all inputs, so other strategies must be used, such as an agreement-based implicit voting - if nobody questions a user's input, it must be true until stated otherwise.
 
-Additionally, different strategies can be used to solve conflicts automatically, thus improving the user experience. More on the proposed solution can be found in Chapter \ref{sec:conflict-res} 
+Additionally, different strategies can be used to solve conflicts automatically, thus improving the user experience. More on this topic is available in Section \ref{sec:conflict-res-sota} and a preliminary proposed solution can be found in Section \ref{sec:prob-solution-conflict-res}.
 
 \section{Reputation System} \label{sec:rep-sys-intro}
 
-The third key-objective of the application will be the reputation system. Currently, there already exists a ranking concept, as well as a "trusted" user, which is the equivalent to the maximum reputation and should be considered as the source of truth in case of conflict.
+The third key-objective of the application will be the reputation system. Currently, there already exists a ranking concept, as well as a \say{trusted} user, which is the equivalent to the maximum reputation and should be considered as the source of truth in case of conflict.
 
-But what about the cases where two "non-trusted" users' inputs conflict, or even the case of two "trusted" users? Who should win? To resolve conflicts, an answer to these \textit{conundrums} is fundamental. Ergo a new reputation system is required, and more details are available in Chapter \ref{sec:rep-sys}.
+But what about the cases where two \say{non-trusted} users' inputs conflict, or even the case of two \say{trusted} users? Who should win? To resolve conflicts, an answer to these \textit{conundrums} is fundamental. Ergo a new reputation system is required, and more details are available in Section \ref{sec:rep-sys-sota}. A preliminary proposed solution is presented in \ref{sec:problem-solution-rep-sys}
 
 \section{Summary} \label{sec:summary-intro}
 

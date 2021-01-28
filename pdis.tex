@@ -45,6 +45,16 @@
 %% Include color package
 \usepackage{color}
 \definecolor{cloudwhite}{cmyk}{0,0,0,0.025}
+\definecolor{engineering}{rgb}{0.549, 0.176, 0.098}
+\usepackage{hyperref,xcolor}
+\hypersetup {
+    colorlinks=true,
+    linkcolor=engineering,
+    urlcolor={engineering},
+    filecolor={engineering},
+    citecolor={engineering},
+    allcolors={engineering}
+}
 
 %% Include source-code listings package
 \usepackage{listings}
@@ -74,6 +84,8 @@
 
 %% Allow for better aligning of equations
 \usepackage{amsmath}
+
+\usepackage{dirtytalk}
 
 %% Uncomment to create an index (at the end of the document)
 %\makeindex
@@ -159,6 +171,7 @@
 \include{intro} 
 \include{sota}
 \include{problem}
+\include{problem-solution}
 \include{conclusion}
 
 %% comment next 2 commands if numbered appendices are not used

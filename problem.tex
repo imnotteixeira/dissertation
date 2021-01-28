@@ -2,56 +2,19 @@
 
 \section*{}
 
-problem section intro here
+This chapter describes the problem tackled in this dissertation, including the planned features, the expected result and the planning to achieve it. Section \ref{sec:prob-def} describes the features to be developed. Section \ref{sec:planning} addresses the planning of the intended tasks. The planned development methodology is defined in Section \ref{sec:methodology}. Some preliminary ideas on the resolution of parts of the problem will be presented in the next chapter (Chapter \ref{chap:problem-solution}). 
 
-\section{Problem Definition}
+\section{Problem Definition}\label{sec:prob-def}
 
 TODO
 US here
 
-\section{Proposed Solution} \label{sec:problem-solution-proposal}
+\section{Planning}\label{sec:prob-planning}
 
 TODO
-arch + techs here
-mockups?
-\subsection{Reputation System} \label{sec:problem-solution-proposal-rep-system}
-As was mentioned in the Literature Review (Section \ref{sec:rep-sys-sota}), an effective method to achieve a fair reputation system, which takes into account the time dynamics of user interactions as well as their current reputation, is to implement a personalized PageRank algorithm, which takes into account the reputation of users when calculating vouching or invalidation, in order to achieve a weighted voting system so as to provide long-term reputable users with a prize for their good behavior. Recalling the system present in \cite{Daly2009}, there are 4 rules involved in adapting the system to our use case:
+GANTT here
 
-\begin{enumerate}
-    \item Every time a user consumes a document from an author, the author gains reputation;
-    \item Every time a user consumes a document, the document gains "reputation" (i.e. popularity);
-    \item In order to take time dynamics into account, reputation should decrease over time, so that a "rich-get-richer" paradigm can be avoided (both for users and for documents);
-    \item Users with higher reputation matter more when calculating the document reputation changes;
-\end{enumerate}
-
-With this in mind, I propose the following rules to adapt this to our scenario:
-
-\begin{itemize}
-    \item Every time a user agrees with an input, he will improve the input's reputation according to rules 2 and 4;
-    \begin{multline}
-        newInputRep = oldInputRep + (1 - oldInputRep) * maxRepReward * userRep\\ * userRepInfluence
-    \end{multline}
-    \item Every time a user disagrees with an input (either by inputting a real-conflicting input or reporting as false/inaccurate) he will worsen the input's rep according to rules (2's reverse) and 4;
-    \begin{equation}
-        newInputRep = oldInputRep * (1 - maxRepPunishment * userRep * userRepInfluence)
-    \end{equation}
-    \item Every time a user submits a falsely-conflicting input, meaning that both users submitted the same information resulting in duplicated information, it should act as an explicit agreement with the other user's input, so it should count more, according to an $explicitAgreementBonus$ constant, which must be greater than zero to achieve the bonus effect;
-    \begin{multline}
-    newInputRep = oldInputRep \\+ ((1 - oldInputRep) * repReward * userRep * userRepInfluence)\\ * (1 + explicitAgreementBonus)
-    \end{multline}
-    \item The user gains reputation according to the average of its inputs' reputations. Only takes into account the latest inputs, referring to the last event which will trigger the reputation update;
-    \begin{equation}
-        newUserRep = oldUserRep + (1 - oldUserRep) * \frac{\sum inputRep}{numInputs}
-    \end{equation}
-    \item Each user has a reputation decay according to rule 3, the time unit should be 1 week since there's at least one relevant game per week. This prevents users that generate a lot of inputs in a single game to enjoy their reputation boost for many more games, since they need to be consistent every week: it matters more if they make an input every week than 20 inputs once every 2 or more weeks.
-    This decay is on a higher level than the events, creating 20 inputs in an event is roughly the same as 1 input in an event (since the football events last around 90 minutes)
-    \begin{equation}
-        newUserRep = oldUserRep * decayCoefficient^{timeSinceLastUpdate}
-    \end{equation}
-    \item The reputation values are updated at the end of each event, according to the event's history.
-\end{itemize}
-
-\section{Methodology}
+\section{Methodology}\label{sec:prob-methodology}
 
 TODO
 mention scrum like stuff, in order to be able to gather feedback with ready products in between sprints (vs kanban which would be more continuous)
@@ -59,7 +22,3 @@ mention scrum like stuff, in order to be able to gather feedback with ready prod
 
 This work is intended to be tested on real users during its development. Thus, an agile methodology seems to be more fitting than a waterfall approach \cite{beck2001agile}. The most common are Scrum, XP and Kanban.
 
-\section{Planning}
-
-TODO
-GANTT here
