@@ -2,7 +2,7 @@
 
 \section*{}
 
-This chapter describes the problem tackled in this dissertation, including the planned features, the expected result and the planning to achieve it. Section \ref{sec:prob-def} describes the features to be developed. Section \ref{sec:prob-planning} addresses the planning of the intended tasks. The planned development methodology is defined in Section \ref{sec:prob-methodology}. Some preliminary ideas on the resolution of parts of the problem will be presented in the next chapter (Chapter \ref{chap:problem-solution}). 
+This chapter describes the problem tackled in this dissertation, including the planned features, the expected result and the planning to achieve it. Section \ref{sec:prob-def} describes the features to be developed. The planned development methodology is defined in Section \ref{sec:prob-methodology}. Section \ref{sec:prob-planning} addresses the planning of the intended tasks. Some preliminary ideas on the resolution of parts of the problem will be presented in the next chapter (Chapter \ref{chap:problem-solution}).
 
 \section{Problem Definition}\label{sec:prob-def}
 
@@ -28,14 +28,42 @@ A prototype that allows event submission is already available, and since it is u
 
 \section{Planning}\label{sec:prob-planning}
 
-TODO
-GANTT here
+Based on the features described above, and since ultimately the goal is to produce a dissertation on the challenges and decisions of their implementation, this is the proposed plan of implementation:
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.9\textwidth]{gantt_diss.pdf}
+        \caption{Planning Gantt chart. A bigger version is available as Annex \ref{annex:gantt}}
+        \label{fig:gantt-plan}
+    \end{center}
+\end{figure}
+
+
+TODO ADD ANNEX LANDSCAPE VERSION
+To solve it, use the landscape package. I put two includegraphics because it depends on the size of your image.
+
+\documentclass[]{scrbook}
+\usepackage{lscape}
+\usepackage{graphicx}
+\begin{document}
+\begin{landscape}
+\begin{figure}[!h]
+   \centering
+    %\includegraphics[width=1.0\textwidth]{Image.eps}
+    \includegraphics[height=0.95\textheight]{Image.eps}
+    \caption{Example}
+    \label{fig:example}
+\end{figure}
+\end{landscape}
+\end{document}
+
+
 
 \section{Methodology}\label{sec:prob-methodology}
 
-TODO
-mention scrum like stuff, in order to be able to gather feedback with ready products in between sprints (vs kanban which would be more continuous)
 
+This work is intended to be tested on real users during its development. Thus, an agile methodology seems to be more fitting than a waterfall approach \cite{beck2001agile}. The most common are Scrum, XP and Kanban. However, in a small team Scrum and XP might be exaggerated and Kanban should be more easily employed. The really important aspect, regardless of the methodology used, is to develop iteratively, employing some kind of sprints where work is focused on a set of immutable tasks, allowing user testing at the end of the Sprint for validation. 
 
-This work is intended to be tested on real users during its development. Thus, an agile methodology seems to be more fitting than a waterfall approach \cite{beck2001agile}. The most common are Scrum, XP and Kanban.
+In order to get validation from users, I expect to collect usage information, as well as simple forms regarding their opinion on the platform, mostly regarding usability and ease-of-use. 
 
