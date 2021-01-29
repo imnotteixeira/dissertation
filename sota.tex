@@ -227,7 +227,7 @@ Reputation values scale between 0 and 1, and it sticks to the following rules:
 \begin{enumerate}
     \item Every time a user consumes a document from an author, the author gains reputation according to:
     \[newRep = oldRep + (1 - oldRep) * repReward\]
-    $repReward$ is a constant between 0 and 1 and should consider the number of entities in the system. As the paper states: \say{If the number of expected consumers is in the order of hundreds or thousands, then an overly high value of $repReward$ will potentially cause popular content to quickly converge towards 1 making it difﬁcult to differentiate between similarly popular content.}.
+    $repReward$ is a constant between 0 and 1 and should consider the number of entities in the system. As the paper states: \say{If the number of expected consumers is in the order of hundreds or thousands, then an overly high value of $repReward$ will potentially cause popular content to quickly converge towards 1 making it difficult to differentiate between similarly popular content}.
     \item Every time a user consumes a document, the document gains \say{reputation} --- meaning popularity in this case --- according to the same formula of (1):
     \[newRep = oldRep + (1 - oldRep) * repReward\]
     \item In order to take time dynamics into account, reputation should decrease over time, so that a \say{rich-get-richer} paradigm can be avoided. This is achieved by the following equation (both for users and for documents):

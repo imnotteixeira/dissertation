@@ -12,13 +12,13 @@ This project will provide an approach to this problem and the following sections
 
 \section{Offline Availability} \label{sec:offline-avail-intro}
 
-As previously stated, internet connection in stadiums is poor most of the time. Thus, the users must have the option to interact with the application and synchronize once possible. This will obviously lead to data consistency issues (i.e. two users report a goal, changing the result to \say{1-0} for example, but one of them is offline, so when it finally synchronizes, the result is already \say{3-2} and it should not be overwritten.)
+As previously stated, internet connection in stadiums is poor most of the time. Thus, the users must have the option to interact with the application and synchronize once possible. This will obviously lead to data consistency issues (i.e. two users report a goal, changing the result to \say{1-0} for example, but one of them is offline, so when it finally synchronizes, the result is already \say{3-2}, and it should not be overwritten.)
 
 More information on this topic is presented in Section \ref{sec:offline-avail-sota} and a proposed solution will be stated in Section \ref{sec:prob-solution-offline-avail}.
 
 \section{Conflict Resolution} \label{sec:conflict-res-intro}
 
-Another objective of the tool is to provide users with automatic conflict resolution when possible. Some strategies are depicted in the State of the Art section, in Chapter \ref{sec:conflict-res-sota}. Here, it is important to preserve the truth and the most up-to-date versions of data. In this scenario, there might not be a source of truth present to verify and validate all inputs, so other strategies must be used, such as an agreement-based implicit voting - if nobody questions a user's input, it must be true until stated otherwise.
+Another objective of the tool is to provide users with automatic conflict resolution when possible. Some strategies are depicted in the \textit{State of the Art} section, in Chapter \ref{sec:conflict-res-sota}. Here, it is important to preserve the truth and the most up-to-date versions of data. In this scenario, there might not be a source of truth present to verify and validate all inputs, so other strategies must be used, such as an agreement-based implicit voting - if nobody questions a user's input, it must be true until stated otherwise.
 
 Additionally, different strategies can be used to solve conflicts automatically, thus improving the user experience (UX). More on this topic is available in Section \ref{sec:conflict-res-sota} and a preliminary proposed solution can be found in Section \ref{sec:prob-solution-conflict-res}.
 
