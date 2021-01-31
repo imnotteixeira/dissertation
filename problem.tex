@@ -2,15 +2,15 @@
 
 \section*{}
 
-This chapter describes the problem tackled in this dissertation, including the planned features, the expected result and the planning to achieve it. Section \ref{sec:prob-def} describes the features to be developed. The planned development methodology is defined in Section \ref{sec:prob-methodology}. Section \ref{sec:prob-planning} addresses the planning of the intended tasks. Some preliminary ideas on the resolution of parts of the problem will be presented in the next chapter (Chapter \ref{chap:problem-solution}).
+This chapter describes the problem tackled in this dissertation, including the planned features, the expected result, and the planning to achieve it. Section \ref{sec:prob-def} describes the features to be developed. The planned development methodology is defined in Section \ref{sec:prob-methodology}. Section \ref{sec:prob-planning} addresses the planning of the intended tasks. Some preliminary ideas on the resolution of parts of the problem will be presented in the next chapter (Chapter \ref{chap:problem-solution}).
 
 \section{Problem Definition}\label{sec:prob-def}
 
-As mentioned in the Introduction (Chapter \ref{chap:intro}), the goal of the project is to develop a web application that allows users to follow a sport event in a real-time chat-like environment where everyone can input game events. For users that are just following, it would work like a live coverage of the event, for contributors it should be resilient to network failures, due to the Wi-Fi limitations of stadiums.
+As mentioned in the Introduction (Chapter \ref{chap:intro}), the project's goal is to develop a web application that allows users to follow a sporting event in a real-time chat-like environment where everyone can input game events. For users that are just following, it would work as live coverage of the event; for contributors, it should be resilient to network failures due to stadiums' Wi-Fi limitations.
 
-Due to the above goal, some necessary features start to surface such as real-time conflict resolution and the inherent reputation system for tie-breaking when necessary. 
+Due to the above goal, some necessary features start to surface, such as real-time conflict resolution and the inherent reputation system for tie-breaking when necessary. 
 
-A prototype that allows event submission is already available, and since it is using React, and it is an appropriate technology for this task, it will be kept. Some features still need to be polished, but most of the UI is already done, which will allow a bigger focus on the actual real-time conflict resolution problem. The features are described as follows, in User Story format\footnote{In software development and product management, a user story is an informal, natural language description of one or more features of a software system. User stories are often written from the perspective of an end user or user of a system.}:
+A prototype that allows event submission is already available, and since it is using React and it is an appropriate technology for this task, it will be kept. Some features still need to be polished, but most of the UI is already done, which will allow a bigger focus on the actual real-time conflict resolution problem. The features are described as follows, in User Story format\footnote{In software development and product management, a user story is an informal, natural language description of one or more features of a software system. User stories are often written from the perspective of an end-user or user of a system.}:
 
 \begin{itemize}[leftmargin  = 3.25\parindent, align=left]
     \item[US01] As a user, I want to be able to join a sport event channel, where I can see details about the event in real-time (either pre-filled or contributed by other users)
@@ -29,13 +29,13 @@ A prototype that allows event submission is already available, and since it is u
 
 \section{Methodology}\label{sec:prob-methodology}
 
-This work is intended to be tested on real users during its development. Thus, an agile methodology seems to be more fitting than a waterfall approach \cite{beck2001agile}. The most common are Scrum, XP and Kanban. However, in a small team Scrum and XP might be exaggerated and Kanban should be more easily employed. The really important aspect, regardless of the methodology used, is to develop iteratively, employing some kind of sprints where work is focused on a set of immutable tasks, allowing user testing at the end of the Sprint for validation. 
+This work is intended to be tested on real users during its development. Thus, an agile methodology seems to be more fitting than a waterfall approach \cite{beck2001agile}. The most common are Scrum, XP, and Kanban. However, in a small team, Scrum and XP might be exaggerated, and Kanban should be more easily employed. Regardless of the methodology used, the really important aspect is to develop iteratively, employing some kind of \say{sprints} where work is focused on a set of immutable tasks, allowing user testing at the end of the Sprint for validation. 
 
-In order to get validation from users, I expect to collect usage information, as well as simple forms regarding their opinion on the platform, mostly regarding usability and ease-of-use. 
+To get validation from users, I expect to collect usage information and simple forms regarding their opinion on the platform, mostly regarding usability and ease-of-use. 
 
 \section{Planning}\label{sec:prob-planning}
 
-Based on the features described above, and since ultimately the goal is to produce a dissertation on the challenges and decisions of their implementation, Fig. \ref{fig:gantt-plan} depicts the proposed plan of implementation, in a Gantt chart, over the 21 weeks of work.
+Based on the features described above, and since ultimately the goal is to produce a dissertation on the challenges and decisions of their implementation, Fig. \ref{fig:gantt-plan} depicts the proposed plan of implementation over the 21 weeks of work.
 
 
 \begin{landscape}

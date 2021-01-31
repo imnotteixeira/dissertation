@@ -2,19 +2,19 @@
 
 \section*{}
 
-This document had two goals. First, it allowed for a better research on the already done work on the topics that will be covered by the application, providing a better context and improving future design decisions. Second, it served as an initial look at how the problem could be tackled, proposing some initial solutions to it, and planning them.
+This document had two goals. First, it allowed for better research on the already done work on the topics that will be covered by the application, providing a better context and improving future design decisions. Second, it served as an initial look at how the problem could be tackled, proposing some initial solutions and planning them.
 
-This dissertation proposes to create a real-time web application to allow users to input sport events' updates, while featuring an offline mode and automatic conflict resolution whenever possible. Throughout the document, three main areas were outlined: \textit{Offline Availability}, \textit{Conflict Resolution}, \textit{Reputation System}. 
+This dissertation proposes to create a real-time web application to allow users to input sports events' updates while featuring an offline mode and automatic conflict resolution whenever possible. Throughout the document, three main areas were outlined: \textit{Offline Availability}, \textit{Conflict Resolution}, \textit{Reputation System}. 
 
-Regarding \textit{Offline Availability}, the application will require some local storage to keep users' work when they don't have internet access. Multiple solutions were analyzed and \textit{localStorage} seemed the best fit as it is widely available on browsers and provides plenty of storage space.
+Regarding \textit{Offline Availability}, the application will require some local storage to keep users' work when they don't have internet access. Multiple solutions were analyzed, and \textit{localStorage} seemed the best fit as it is widely available on browsers and provides plenty of storage space.
 
-Concerning \textit{Conflict Resolution}, multiple strategies can be used, most notably OT and CRDT. One of the first things to do in the project will be trying both of them and analyze which works best, based on the experience.
+Concerning \textit{Conflict Resolution}, multiple strategies can be used, most notably OT and CRDT. One of the first things to do in the project will be to try both of them and analyze which works best, based on the experience.
 
 As for the \textit{Reputation System}, some rules were analyzed, such as \say{Should the reputation value be available for everyone to see?}, or \say{When to update the reputation values?}. Every system is different, and different strategies must be tried and evaluated on the user base. However, a system based on time dynamics and \say{higher-reputation-counts-more} is proposed, due to the research shown in Chapter \ref{chap:sota}.
 
-All of these decisions might have impacts on UX, and we intend to study the effects of our design decisions on the application usage. This is accounted for in the project planning.
+All of these decisions might impact UX, and we intend to study the effects of our design decisions on application usage. This is accounted for in the project planning.
 
 \section{Expected Contributions}
-In the end of this work, this project can have two main contributions. First, is the actual application, that will allow many sports fans to connect to their local teams and follow their games with the community. Second, work regarding the testing of a multi-user real-time application can be useful for anyone developing such an application. I intend to create a tool on top of existing testing frameworks, allowing easier testing of these applications.
+At the end of this work, this project can have two main contributions. First is the actual application, which will allow many sports fans to connect to their local teams and follow their games with the community. Second, work regarding the testing of a multi-user real-time application can be useful for anyone developing such an application. I intend to create a tool on top of existing testing frameworks, allowing easier testing of these applications.
 
 \vspace*{12mm}
