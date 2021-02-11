@@ -21,9 +21,17 @@ More recently, we start to see \say{Single Page Applications}, which harness the
     \end{center}
   \end{figure}
 
-  Since the web uses the HTTP Protocol \cite{http1-1protocol} \cite{http2protocol}, it is quite hard to achieve real-time behavior with good performance, due to the protocol's design \cite{Spero1994}. As shown in Figure \ref{fig:http-protocol}, every data transfer starts with a request and ends with a response. It is therefore tied to this two-step process, which limits its potential. 
-  
-  To allow a more performant way of data transmission between client and server, similar to the well-known data sockets available in Operating Systems used for bi-directional data transfer in real-time, there exist Web Sockets \cite{websocket-protocol} which serve the same purpose and allow Web Applications to send real-time updates to the clients without them needing to request them, which would only be possible otherwise using techniques such as polling (i.e.,\ the client keeps asking the server for updates periodically), and even here, the client is actually asking for updates, only in fast succession.
+Since the web uses the HTTP Protocol \cite{http1-1protocol} \cite{http2protocol}, it is quite hard to achieve real-time behavior with good performance, due to the protocol's design \cite{Spero1994}. As shown in Figure \ref{fig:http-protocol}, every data transfer starts with a request and ends with a response. It is therefore tied to this two-step process, which limits its potential. 
+
+To allow a more performant way of data transmission between client and server, similar to the well-known data sockets available in Operating Systems used for bi-directional data transfer in real-time, there exist Web Sockets \cite{websocket-protocol} which serve the same purpose and allow Web Applications to send real-time updates to the clients without them needing to request them, which would only be possible otherwise using techniques such as polling (i.e.,\ the client keeps asking the server for updates periodically), and even here, the client is actually asking for updates, only in fast succession.
+
+When developing a Web Application, one of the most important aspects is User Experience (UX). It is even more relevant than User Interface (UI) because, even though they impact one another, an application with a good UI but poor UX is just a nice painting the users can look at and be amazed, but with no interaction whatsoever.
+
+According to Tullis and Albert \cite{measuring-user-experience-tullis}, UX involves a user, that user's interaction with the interface, and the interest in observing or measuring their experience when using the interface. A more common concept is usability, which is usually considered to be the ability of the user to use the interface to execute a task successfully.
+
+In order to have a good UX, an application cannot require too much thinking from the user, it should be intuitive \cite{Krug2013-ux}. The application should be self-explanatory and \say{nothing important should be more than two clicks away}. This involves link naming, placement, colors, and more, hence its connection to the UI.
+
+Even though some things have specific rules (e.g.,\ links should be say{clickable} and look like it), others require further examination to understand how users are interacting with them. This is done manually in usability tests, where actual human users are recruited and product owners can see directly how they execute some requested action, and feedback is provided directly; or automatically, through UX metrics.
 
 \section{Offline Availability}\label{sec:offline-avail-sota}
 
@@ -81,10 +89,10 @@ Liu \cite{Liu2014} discusses multiple web client storage technologies, comparing
     The data is stored in key-value pairs and is partitioned by domain, with no risk of inter-domain data corruption. It can be read and modified using JavaScript and all values are strings.
     \item \textbf{sessionStorage}: Works in the exact same way as \textit{localStorage}, but the data only lasts until the browser is closed, i.e.,\ the session;
     \item \textbf{UserData}: Older technology, specific to Internet Explorer, and has since been deprecated, it had only 128 KB of capacity;
-    \item \textbf{Web SQL Databases}: Uses a table-structured format to store the local data. In Google Chrome, it uses the SQLite DB. The interactions are made as it were a normal SQL database running, by using the $executeSql()$ or $transaction()$ APIs. It is not supported by all browsers nor is it part of W3C standard \cite{WebSQL-storage-w3c};
+    \item \textbf{Web SQL Databases}: Uses a table-structured format to store the local data. In Google Chrome, it uses the SQLite DB. The interactions are made as it were a normal SQL database running, by using the $executeSql()$ or $transaction()$ APIs. It is not supported by all browsers nor is it part of W3C standard\footnote{https://www.w3.org/TR/webdatabase/};
     \item \textbf{Indexed Database}: Uses a NoSQL DB to store the data. Event-based so it is asynchronous by default. It might be helpful to use a Promise-based wrapper \cite{promises-js-mdn} such as idb\footnote{https://www.npmjs.com/package/idb}.
 \end{itemize}
-Liu further concludes that \textit{localStorage} is the most compatible among web browsers. In summary, for session id tracking or for small data storage, one should use \textit{Cookies}; up to 5 MB, \textit{localStorage} delivers a solution across all common browsers \cite{webstorage-w3c}; for more space, \textbf{Indexed Database} is recommended.
+Liu further concludes that \textit{localStorage} is the most compatible among web browsers. In summary, for session id tracking or for small data storage, one should use \textit{Cookies}; up to 5 MB, \textit{localStorage} delivers a solution across all common browsers\footnote{https://www.w3.org/TR/webstorage/}; for more space, \textbf{Indexed Database} is recommended.
 
 Jemel and Serhrouchni \cite{Jemel2014} presents some vulnerabilities that can arise from using the HTML5 Local Storage API as is. It also introduces a way of securing data stored using the local storage API, based on the user, not only the domain the data belongs to.
 
@@ -252,9 +260,9 @@ Reputation values scale between 0 and 1, and they stick to the following rules:
 
 \section{Similar platforms}
 
-On a basic level, this is a sporting-event following app. A similar platform would be 365scores.com \cite{365scores-about}, which offers the following of the same events in real-time; however, it does not offer the community-input feature of this proposed work.
+On a basic level, this is a sporting-event following app. A similar platform would be 365scores.com\footnote{https://www.365scores.com/pt/pages/about}, which offers the following of the same events in real-time; however, it does not offer the community-input feature of this proposed work.
 
-Another platform that enables live viewing of sporting events is mycujoo.tv \cite{mycujoo-about}. This enables the teams to live stream the game with video and mark specific events as they happen so that the viewers can revisit those moments in the video. It, too, lacks the community input feature when inserting the events; it is more geared towards the clubs sharing ability rather than the fans'. 
+Another platform that enables live viewing of sporting events is mycujoo.tv\footnote{https://mycujoo.tv/en/about-us}. This enables the teams to live stream the game with video and mark specific events as they happen so that the viewers can revisit those moments in the video. It, too, lacks the community input feature when inserting the events; it is more geared towards the clubs sharing ability rather than the fans'. 
 
 This leaves zerozero.live as a singular app that will allow fans to contribute to the games' events in real-time, increasing engagement, which can be complemented with the enormous football-related database which can provide real-time statistics about the game.
 
