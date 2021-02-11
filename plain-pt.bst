@@ -934,7 +934,7 @@ FUNCTION {sort.format.names}
       if$
       s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
       nameptr numnames = t "others" = and
-        { "et al" * }
+        { "et al.\ * }
         { t sortify * }
       if$
       nameptr #1 + 'nameptr :=
