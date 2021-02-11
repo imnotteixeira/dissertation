@@ -14,9 +14,27 @@ It features a first block for practical research and test implementation of tech
 
 \subsection{UX Monitoring}
 
-In order to better understand how the user is interacting with the application and pinpoint some aspects that might be worth improving, we intend to measure some aspects of the interaction. Next are some proposed metrics, which are relevant to this study.
+In order to better understand how the user is interacting with the application and pinpoint some aspects that might be worth improving, we intend to measure some aspects of the interaction. Next are some proposed metrics, which are relevant to this study They are divided on their type for clearer understanding.
 
-{\huge UX METRICS HERE}
+\begin{enumerate}
+    \item Performance metrics:
+    \begin{enumerate}
+        \item Number of automatically-unsolved conflicts during an event per user
+        \item Number of total generated conflicts
+        \item Time to input (time measured since input area focus to input submission) --- Might also be useful to know the evolution of this value per user, as a measure of \say{learnability}
+        \item Click to input (Clicks since the focus of input to input submission, discarding keystrokes --- Related mostly with the predefined inputs for which there will be buttons)
+    \end{enumerate}
+    \item Self-Reported metrics, asked in the form of a Likert scale\footnote{A typical item in a Likert scale is a statement to which respondents rate
+    their level of agreement. The statement may be positive (e.g.,\ “The terminology used in this interface is clear”) or negative (e.g., “I found the navigation options confusing”). Usually a five-point scale of agreement like the following is used: 1. Strongly disagree 2. Disagree 3. Neither agree nor disagree 4. Agree 5. Strongly agree}, when appropriate:
+    \begin{enumerate}
+        \item The conflicts were easily to locate (*)
+        \item The conflicts were easy to solve (*)
+        \item I was able to easily use the interface \\
+        \item Open answer to allow users to give whatever feedback they might have
+    \end{enumerate}
+\end{enumerate}
+
+(*) Only shown if users dealt with conflicts
 
 
 \begin{landscape}
