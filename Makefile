@@ -6,8 +6,8 @@
 #
 
 ## Basename for result
-# TARGET=thesis
-TARGET=pdis
+TARGET=thesis
+# TARGET=pdis
 
 ## programs
 LATEX=latex

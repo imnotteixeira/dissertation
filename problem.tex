@@ -19,7 +19,7 @@ The features of the prototype are described as follows, in User Story format\foo
     \item[US01] As a user, I want to be able to join a sport event channel, where I can see details about the event in real-time (either pre-filled or contributed by other users), so that I have information about what is happening in the event.
     \item[US02] As a user, I want to be able to be able to post event updates while on an event channel, in a chat-like interaction, so that I can easily contribute in an input experience I recognize.
     \begin{itemize}
-        \item Event updates include: Starting players, Goals, Fouls, Set-Pieces, Cards, Substitutions
+        \item Event updates include: Starting players, Goals, Fouls, Set-Pieces, Cards, Substitutions, Game-Time information, and generic match information
     \end{itemize} 
     \item[US03] As a user, I want to be able to use the application while in offline mode, and have it synchronize once the connection is resumed, so that I don't lose information nor focus when my connection drops.
     \item[US04] As a user, I want to see a value representing the reputation of other users in a given event channel, so that I have a basis on which to decide if I trust them. 
@@ -104,24 +104,7 @@ With this in mind, I propose the following rules to adapt this to our scenario:
     \item The reputation values are updated at the end of each event, according to the event's history.
 \end{itemize}
 
-\subsection{Automated Testing}
-
-When testing a usual single-user Web Application, we rely on the simulation of user actions such as clicking on components, inputting information and submitting forms. Then we assert what we expect those actions to change on the webpage. This can be done as unit tests, where we simulate the rendering of the webpage, generating the DOM, then simulate the actions and their effects on the DOM, and finally assert on how the DOM should look like in the end. 
-
-A more complex scenario is simulating the whole browser, which can interact with actual web servers, as if actual users were requesting the page, commonly known as end-to-end testing.
-
-However, since we aim to test a multi-user application, we should consider that in the test scenarios themselves, having multiple agents execute specific actions on specific times, to trigger conflict situtations.
-
-In order to do this, all agents must be connected to the same event, and thus need to connect to a server, which will host a test event. Additionally, all agents must be able to execute concurrent actions on demand. For this, I propose the implemtation of an orchestrator entity which controls the agents running the browser engine simulation. The test cases would include a relative timestamp, so that actions with the same timestamp should be executed concurrently.
-
-Finally, the agents would assert on their application view, and report to the orchestrator, which would join the results and coordinate the test suite.
-
-More specifically, this allows us to request two agents to submit two conflicting inputs and assert that both of them see the conflict and are able to solve it.
-
 \section{Summary}
 
 In summary, the problem to be tackled is the development of a multi-user real-time application allowing the coverage of sporting events, with offline tolerance. That entails the existance of conflict resolution strategies, as well as a reputation system, which should take time into consideration, making reputation more dynamic.
-
-The automated testing of such an application is not trivial, since it will require the simulation of multiple agents executing the actions the real users would do. They must be managed by an orquestrator service that will synchronize their actions, based on the event time, which can then simulate concurrent events.
-
 
