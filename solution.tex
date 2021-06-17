@@ -47,6 +47,8 @@ Finally, this has the advantage of having a browser version, powered by PouchDB,
 
 \subsection{Conflict Handling}
 
+\subsubsection{Conflict Detection}
+
 After generating match events, conflicts may arise. The conflicting events are the ones whose documents share the same id. If we want documents to conflict, they cannot have unique ids, so the following schema was defined for each event id:
 \begin{equation}
     eventMinute-eventMinuteExtra-eventCategory
@@ -68,7 +70,49 @@ This is a Node.js process that will use PouchDB to connect to the remote CouchDB
     \item If the document has conflicts, try to resolve them according to the specified rules, by either deleting the conflict and keeping the current winner, deleting the conflict and adding it \textit{after} the previous winner, to choose it as winner, or keeping both documents, by deleting the conflict and adding a replicated document with a unique suffix added to the id so that it won't conflict again.
 \end{itemize}
 
-{\Huge TODO SHOW CONFLCIT RESOLUTION RULES (?)}
+As it was mentioned earlier, all CouchDB documents have an $\_id$ and a $\_rev$ (as in \textit{revision}). When \textit{putting} a document --- CouchDB has a \textit{put} operation that allows insertions, edits and deletions, depending on the given argument --- if there is already an object with the same $\_id$, CouchDB will try to update it, however if the $\_rev$ does not match, a conflict is generated. For insertions, it only requires an object with at least an $\_id$ field. For edits, it requires the object with an $\_id$, referring to the document to be edited, and a $\_rev$, corresponding to the current revision of the document to be edited. For deletions, it requires the $\_id$, $\_rev$ and a $\_deleted$ field with a value of $true$, which is a special case of the edit operation. The deleted documents are not really removed from the database until a compaction operation\footnote{https://docs.couchdb.org/en/stable/maintenance/compaction.html} is performed to clean the deleted documents and older revisions are stripped, leaving only the necessary data required for conflict resolution operations.
+
+Document revisions have two components: a number indicating their level in the tree of updates of that document, and a unique identifier. When a document is inserted, the generated revision starts with 1, and every time it updates, the successive revisions will have consecutive values e.g., 2, 3, and so on. This means that, considering two users are synchronized with the remote database which has a document with a revision of \say{1-xyz}, if they both want to update that document at the same time, they will both try to \textit{put} a document with \say{1-xyz} as its parent node. When CouchDB receives the requests, it will generate a revision for each, starting with 2, since their parent node revision starts with 1. One of them will be chosen as winner, and the other will conflict, since there are two documents on the same level: 2. The winner is automatically and deterministically chosen by CouchDB, so that every replica of the database is consistent, and it will store the conflicts for each document as well, then it's up to the application layer to resolve the conflict as needed. The primary focus of this work starts here, by applying automatic conflict resolution strategies between the automatic CouchDB winner selection and the manual user conflict resolution that may happen afterwards.
+
+\subsubsection{Base conflict resolution strategies}
+
+A base set of operations was defined in order to help solve conflicts. As per design, every conflict is resolved indivdually, i.e., if there are three documents conflicting, the conflict resolution will take palce two times, one for each conflict pair (current winner, conflict). They all receive the pre-selected winner and conflict documents as arguments:
+\begin{itemize}[leftmargin  = 3.25\parindent, align=left]
+    \item[\textbf{Leave Conflict}] This is the most basic resolution operation. It does nothing and leaves the conflict in the database, so that it can be resolved later in the frontend application;
+    \item[\textbf{Ignore Conflict}] This is another basic resolution operation. It simply deletes the conflicting revision, basically agreeing with the automatic decision done by CouchDB;
+    \item[\textbf{Choose a Winner}] This operation deletes the document passed as conflict and inserts a new revision as the winner;
+    \item[\textbf{Keep Both}] This operation resolves conflicts by keeping both documents. Since there can't be two documents with the same id in CouchDB, otherwise they would conflict, it first deletes the conflicting revision, creates a new revision for the current winner, and inserts a new document equal to the conflicting one, but with a UUID\footnote{A UUID (Universally Unique Identifier) is a random 128-bit identifier. \cite{uuid-rfc}} appended to its default id. This ensures that it won't conflict with the existing document, however it has the downside that it won't conflict with anything ever again. While the initial document remains in the database, there will always be a \say{representative} of that set of ids, that will trigger conflicts every time a new document with that id is inserted. If that document is deleted, there is a workaround in place that selects a document from those with the same base id, and removes the random suffix, so that there is always some event to detect the conflicts for future inserts;
+    \item[\textbf{Keep All}] This operation;
+\end{itemize}
+
+Additionally, there are specific resolutions that are triggered on the frontend --- not automatically ---- if the user resolves a conflict by choosing a winner or by keeping all conflicting documents:
+
+\begin{itemize}[leftmargin  = 3.25\parindent, align=left]
+    \item[\textbf{Choose One - Frontend}] When choosing a winner, since there may be multiple conflicts at the same time, it needs to delete them all to fully resolve the conflict. However, if multiple users select different winners by each resolving the conflict differently, in the end they would end up delting all documents. In order to avoid this, after deleting the loser documents, a new revision for the winner is inserted, so that if those multiple users select different winners locally, their choices will still conflict with each other after each \say{round} of conflict resolution. 
+    \item[\textbf{Keep All}] This operation is similar to the \textit{Keep Both} operation in concept, but applied to $n$ documents at a time, not only 2 documents. It does so by first deleting all conflicts corresponding to a document id, then inserting new documents equal to the deleted conflicts, but with a UUID appended to the id, to make them unique, and avoid the conflict;
+\end{itemize}
+
+\subsubsection{Composite conflict resolution strategies}
+
+By leveraging the aformetioned strategies, it's possible to create complex rules that apply to different event types that conflict with each other, provided that they happen in the same match minute and belong in the same event category.
+
+\begin{itemize}[leftmargin  = 3.25\parindent, align=left]
+    \item[\textbf{Force Winner By Event Id}] Chooses as winner the document that has a given event id;
+    \item[\textbf{Highly Conflicting; Ignore if same player}] If the player is the same, ignore conflict; Otherwise leaves the conflict intact to be resolved by the user;
+    \item[\textbf{Goal vs. Own Goal}] In case a user reports a goal from team A, but another reports own goal from team B, they are both referring to the same goal, so the own goal event is chosen as winner, since it is more specific. Otherwise, leave the conflict to be resolved by the user;
+    \item[\textbf{If same player, keep the one with given event id}] If the events refer to the same player, choose as winner the one that has the given event id; Otherwise leave the conflict to be resolved by the user;
+    \item[\textbf{If different player, use reputation; Otherwise ignore}] If the referred players are different, choose as winner the event whose user has the highest reputation; Otherwise, ignore conflict;
+    \item[\textbf{If same player, use reputation; Otherwise, keep both}] If the referred players are the same, choose as winner the event whose user has the highest reputation; Otherwise, keep both documents;
+    \item[\textbf{If same player, ignore conflict; Otherwise, keep both}] If the referred players are the same, ignore the conflict; Otherwise, keep both documents;
+    \item[\textbf{If same player, ignore conflict; Otherwise use reputation}] If the referred players are the same, ignore the conflict; Otherwise, choose as winner the event whose user has the highest reputation;
+    \item[\textbf{Substitution Handler}] If the involved players are the same, ignore the conflict; If there are intersecting players, i.e., an event mentions player A out for player B, and the other event mentions player A out for player C, the conflict is left intact to be resolved by the user, later. Finally, if the involved players are different, keep both documents;
+    \item[\textbf{Minute based resolution}] Receives a $minuteCondition$ function that takes the documents' minute as argument, a resolution function to execute if true, and a resolution function to execute if false. If $minuteCondition$ returns true, the first function is called, otherwise the second one is called;
+    \item[\textbf{Choose biggest reputation}] Choose as winner the event whose user has the highest reputation;
+\end{itemize}
+
+
+
+{\Huge TODO SHOW CONFLCIT RESOLUTION RULES (?)  in annex}
 
 {\Huge falar das chamadas ao rep service disagree vs explicit agree}
 
@@ -101,7 +145,7 @@ The Reputation System is based on the fact that people that input conflicting ev
 
 The Reputation Service is a Node.js microservice that exposes an HTTP API, and uses a \mbox{MongoDB} database to persistently store data. It has endpoints to register interactions between users and inputs and another endpoint to calculate reputation updates after a specific match interactions.
 
-The database will store the interactions, which are documents containing $matchId$, $eventId$, $userId$, $eventOwnerId$, $isProcessed$, $interactionType$. $matchId$, $eventId$, and $userId$ uniquely identify an interaction and are used to prevent the same user from registering multiple interactions for the same event. Additionally, there are checks in place so that a user cannot register interactions for an event they have inserted. $isProcessed$ is a boolean flag that marks the interaction as processed by the reputation calculation, so that it is not used multiple times when calculating reputation updates. Finally, the $interactionType$ defines the type of interaction, which affects the reputation update calculation, e.g., $Agree$, $Disagree$, $Explicit Agree$
+The database will store the interactions, which are documents containing the $matchId$, $eventId$, $userId$, $eventOwnerId$, $isProcessed$ and $interactionType$ fields. $matchId$, $eventId$, and $userId$ uniquely identify an interaction and are used to prevent the same user from registering multiple interactions for the same event. Additionally, there are checks in place so that a user cannot register interactions for an event they have inserted. $isProcessed$ is a boolean flag that marks the interaction as processed by the reputation calculation, so that it is not used multiple times when calculating reputation updates. Finally, the $interactionType$ defines the type of interaction, which affects the reputation update calculation, e.g., $Agree$, $Disagree$, $Explicit Agree$
 
 Additionally, the database has another collection to store the user and their respective reputations, to be used in the conflict resolution. Each document has $userId$, $reputation$ and $updatedAt$ fields. The $reputation$ represents the numerical value of the reputation of the user with id $userId$, and the $updatedAt$ field is used to calculate the reputation decay --- the more time passes after the previous reputation calculation, the more its reputation will decay due to inactivity.
 
