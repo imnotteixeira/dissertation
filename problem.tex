@@ -15,19 +15,21 @@ A prototype that allows event submission is already available, and since it is u
 
 The features of the prototype are described as follows, in User Story format\footnote{In software development and product management, a user story is an informal, natural language description of one or more features of a software system. User stories are often written from the perspective of an end-user or user of a system.}:
 
-\begin{itemize}[leftmargin  = 3.25\parindent, align=left]
-    \item[US01] As a user, I want to be able to join a sport event channel, where I can see details about the event in real-time (either pre-filled or contributed by other users), so that I have information about what is happening in the event.
-    \item[US02] As a user, I want to be able to be able to post event updates while on an event channel, in a chat-like interaction, so that I can easily contribute in an input experience I recognize.
+\begin{enumerate}[leftmargin  = 3.25\parindent, align=left, label=US\arabic*, start=1]
+    \item As a user, I want to be able to join a sport event channel, where I can see details about the event in real-time (either pre-filled or contributed by other users), so that I have information about what is happening in the event.
+    \item As a user, I want to be able to be able to post event updates while on an event channel, in a chat-like interaction, so that I can easily contribute in an input experience I recognize.
     \begin{itemize}
         \item Event updates include: Starting players, Goals, Fouls, Set-Pieces, Cards, Substitutions, Game-Time information, and generic match information
     \end{itemize} 
-    \item[US03] As a user, I want to be able to use the application while in offline mode, and have it synchronize once the connection is resumed, so that I don't lose information nor focus when my connection drops.
-    \item[US04] As a user, I want to see a value representing the reputation of other users in a given event channel, so that I have a basis on which to decide if I trust them. 
-    \item[US05] As a user, I want to be able to report input events as false, so that I can let others know that it might not be true and manifest my intention to change it.
-    \item[US06] As a user, I want to be able to see if there are any pending conflicts to be resolved, so that I can clearly see if I need to solve any conflicting information.
-    \item[US07] As a user, I want to be able to resolve any pending conflicts, so that I can keep the event's history clean and understandable.
-    \item[US08] As a user, I want to be able to join an event channel mid-session, being able to see the previous information, so that I have more flexibility, not losing context if I arrive some time late.
-\end{itemize}
+    \item As a user, I want to be able to use the application while in offline mode, and have it synchronize once the connection is resumed, so that I don't lose information nor focus when my connection drops.
+    \item As a user, I want to see a value representing the reputation of other users in a given event channel, so that I have a basis on which to decide if I trust them. 
+    \item As a user, I want to be able to delete inputted events, so that I can let others know that they might not be true and manifest my intention to change it.
+    \item As a user, I want to be able to see if there are any pending conflicts to be resolved, so that I can clearly see if I need to solve any conflicting information.
+    \item As a user, I want to be able to resolve any pending conflicts, so that I can keep the event's history clean and understandable.
+    \item As a user, I want to be able to join an event channel mid-session, being able to see the previous information, so that I have more flexibility, not losing context if I arrive some time late.
+    \item\label{user-story:sync-to-api} As a user, I want to be able to see the events generated on the ZeroZero platform (not ZeroZero Live), so that I can follow the game even if don't want to comment about it.
+    \item\label{user-story:sync-from-api} As an official ZeroZero reporter, I want to be able to input events on the old platform, and have them synced to ZeroZero Live, so that I can use other tooling that depends on it to provide statistics, and still be able to comment manually on ZeroZero Live.
+\end{enumerate}
 
 \section{Problem Solution}\label{sec:prob-sol}
 
