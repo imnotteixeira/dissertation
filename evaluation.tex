@@ -1,16 +1,10 @@
-\chapter{Planning and Methodology}\label{chap:problem-planning}
-
-{\Huge TODO this should only talk about methodology (the user validations questionary, etc, maybe after solution in order to be able to discusss results)}
+\chapter{Evaluation and Analysis}\label{chap:evaluation-and-analysis}
 
 \section{Methodology}\label{sec:prob-methodology}
 
-This work is intended to be tested on real users during its development. Thus, an agile methodology seems to be more fitting than a waterfall approach \cite{beck2001agile}. The most common are Scrum, XP, and Kanban. However, in a small team, Scrum and XP might be exaggerated, and Kanban should be more easily employed. Regardless of the methodology used, the really important aspect is to develop iteratively, employing some kind of \say{sprints} where work is focused on a set of immutable tasks, allowing user testing at the end of the Sprint for validation. 
+There are two types of target users in this platform. The first are the current ZeroZero's sports journalists who cover matches professionally, and have a platform where they do that already. They rely on it to update the match details on the ZeroZero platform. The second are casual people who like to follow lower division matches, due to the lack of coverage. With this in mind, different experiments were made, depending on the type of users and their use cases.
 
-To get validation from users, I expect to collect usage information and simple forms regarding their opinion on the platform, mostly regarding usability and ease-of-use. 
-
-\section{Planning}\label{sec:prob-planning}
-
-\subsection{UX Monitoring}
+\subsection{Experiments Monitoring}
 
 In order to better understand how the user is interacting with the application and pinpoint some aspects that might be worth improving, we intend to measure some aspects of the interaction. Next are some proposed metrics, which are relevant to this study. They are divided on their type for clearer understanding.
 
@@ -35,3 +29,28 @@ In order to better understand how the user is interacting with the application a
 \end{enumerate}
 
 (*) Yes or No questions
+
+\subsection{The Journalist Use-Case}
+% often works alone, relies on the correct api sync (uses a more broad set of events)
+% constant feddback-deployment loop
+When covering a match, journalists usually work alone, as they are assigned different matches to cover. As such, they rarely face conflicts, but they also rely on the API syncronization feature heavily, as it is literally their job to keep the events they are covering up to date on the ZeroZero platform. This means they are an excelent feedback source on how the application works, overall. They provide the software verification feedback, but also validation.
+
+Over the course of about five weeks, as soon as there was a usable product, they used it in production, pin-pointing issues and suggestions on how to make it better for their use-cases. There was a constant \say{deploy, feedback, adapt} loop, which allowed for a faster discovery of problems and their solutions. As of today, the ZeroZero Live platform as been used to cover more than 7 Euro2020 matches in production.
+
+In those coverages, most of the times the events' count surpassed the 100th mark. However, as mentioned earlier, not many conflicts happened, since there was only one user per game.
+When asked about the number of conflicts, journalists classified the number as very low, as expected. They, also as expected, believed the events corresponded to the match's truth. Finally, they were able to cover the matches without problems and would use the tool again, according to the questionnaires.
+
+This validates the product on the journalist use-case. The tool allows CRUD\footnote{CRUD stands for Create-Read-Update-Delete, the most basic data-related operations a system can provide} operations and synchronizes to and from the ZeroZero's API, allowing them to insert, edit and delete events regarding a live match, which can be followed both on ZeroZero and on ZeroZero Live.
+
+Next, the casual user's experience was evaluated, the analysis as available in the next subsection.
+
+\subsection{The Casual User Use-Case}
+% work in groups, crowdsourcing, in theory more conflicts
+% portugal france experiment
+
+Casual users have a slightly different use-case. While they too rely on CRUD operations in order to insert, edit adn delete events, it's expected that they don't rely as much on ZeroZero Api synchronization, as they will follow the game directly on ZeroZero Live. Additionally, a bigger difference relies on the number of participants per match, which is expected to be higher, contributing to the crowdsourcing nature of the tool. This raises the probability of event conflicts happening, which adds relevance to this work, regarding the automatic conflict resoliution. In this subsection, the system will be evaluated in that regard.
+
+In order to prepare this type of experements, a clone of ZeroZero Live was used. This clone was different in terms of features in order to focus on the conflict resolution. It also had no connection to the ZeroZero API, in terms of inserting events or making any changes to the teams for example. Additionally, authentication was not required which allowed for and experiment on a relevant match, live, with no side effects on the ZeroZero platform. The chosen match was Portugal vs. France on the 23rd of June, regarding the Euro2020 group stage. Being a game involving Portugal's team, a long time rival as France, and the last match of the group stage, which Portugal could fail to pass, it was very important and many people would watch it, which meant many people to cover it and experiment the tool.
+
+{\Huge TODO control vs experiments (how many groups/people) + results}
+
