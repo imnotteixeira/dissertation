@@ -181,46 +181,6 @@ Additionally, the database has another collection to store the user and their re
 
 {\Huge falta endpoint de get rep from user - para ser usado no conf.res}
 
-
-% \subsection{Reputation System} \label{sec:problem-solution-rep-sys}
-% As was mentioned in the Literature Review (Section~\ref{sec:rep-sys-sota}), an effective method to achieve a fair reputation system, which takes into account the time dynamics of user interactions as well as their current reputation, is to implement a personalized PageRank algorithm. It takes into account the reputation of users when calculating vouching or invalidation in order to achieve a weighted voting system so as to provide long-term reputable users with a prize for their good behavior. Recalling the system present in \cite{Daly2009}, there are 4 rules involved in adapting the system to our use case:
-
-% \begin{enumerate}
-%     \item Every time a user consumes a document from an author, the author gains reputation;
-%     \item Every time a user consumes a document, the document gains \say{reputation} (i.e.,\ popularity);
-%     \item In order to take time dynamics into account, reputation should decrease over time, so that a \say{rich-get-richer} paradigm can be avoided (both for users and for documents);
-%     \item Users with higher reputation matter more when calculating the document reputation changes;
-% \end{enumerate}
-
-% With this in mind, I propose the following rules to adapt this to our scenario:
-
-% \begin{itemize}
-%     \item Every time a user agrees with an input, he will improve the input's reputation according to rules 2 and 4;
-%     \begin{multline} \label{eq:rep-inc-proposal}
-%         newIR = oldIR + (1 - oldIR) * maxRepReward * userRep * userRepInfluence
-%     \end{multline}
-%     where $IR$ means \textit{Input Reputation}
-%     \item Every time a user disagrees with an input (either by inputting a real-conflicting input or reporting as false/inaccurate) he will worsen the input's rep according to rules (2's reverse) and 4;
-%     \begin{equation}
-%         newIR = oldIR * (1 - maxRepPunishment * userRep * userRepInfluence)
-%     \end{equation}
-%     \item Every time a user submits a falsely-conflicting input, meaning that both users submitted the same information resulting in duplicated information, it should act as an explicit agreement with the other user's input, so it should count more, according to an $explicitAgreementBonus$ constant, which must be greater than zero to achieve the bonus effect;
-%     \begin{equation}
-%     newIR = baseIRIncrement * (1 + explicitAgreementBonus)
-%     \end{equation}
-%     where $baseIRIncrement$ is calculated based on \ref{eq:rep-inc-proposal}
-%     \item The user gains reputation according to the average of its inputs' reputations. Only takes into account the latest inputs, referring to the last event which will trigger the reputation update;
-%     \begin{equation}
-%         newUserRep = oldUserRep + (1 - oldUserRep) * \frac{\sum IR}{numInputs}
-%     \end{equation}
-%     \item Each user has a reputation decay according to rule no. 3, the time unit should be 1 week since there's at least one relevant game per week. This prevents users that generate a lot of inputs in a single game to enjoy their reputation boost for many more games, since they need to be consistent every week: it matters more if they make an input every week than 20 inputs once every 2 or more weeks.
-%     This decay is on a higher level than the events, creating 20 inputs in an event is roughly the same as 1 input in an event (since the football events last around 90 minutes)
-%     \begin{equation}
-%         newUserRep = oldUserRep * decayCoefficient^{timeSinceLastUpdate}
-%     \end{equation}
-%     \item The reputation values are updated at the end of each event, according to the event's history.
-% \end{itemize}
-
 \paragraph{POST /:matchId/:eventId/:eventOwnerId/:userId/agree}
 
 This endpoint is called every time a user receives an event in their local database. It means that they \textit{implicitly} agree with that input, since they haven't yet done something else to manifest any intention on the contrary. Like the other interactions, it does not allow self-voting, and is overwritable, meaning of course that once a user wants to disagree with some input, the previous implicit agreement will be nullified. Finally, it cannot overwrite any existing interaction on the same input, since this endpoint is made to be called automatically, it can be done without worrying about overwriting any other explicit interactions.
