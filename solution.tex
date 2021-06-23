@@ -347,6 +347,28 @@ Regarding the event operations, namely insert, edit, and delete, the process is 
     \end{center}
 \end{figure}
 
+Figure~\ref{fig:insert_doc_seq_noconf} shows the sequence of operations when an event is inserted on the frontend (Browser), when there is no conflict. First the document is created on the local database, which is then replicated to the remote database. Once the remote database receives a document, it will emit events for any listener, including the clients and the conflict handler which, when receiving a document without conflicts, will try to synchronize it to the ZeroZero API, by inserting it in this case. As was previously mentioned, it will then update the document by setting its \say{inserted} field to $false$. That change will once again be propagated to all listening clients.
+
+In the case of conflicts, Figure~\ref{fig:insert_doc_seq_conf} shows that the sequence of operations is slighly different when the conflict handler receives the conflicted document. It will resolve it first, before trying to synchronize anything. One thing to note is that the UI will receive the conflicted event while it is being resolved. For the users, it is as if someone is resolving a conflict really fast, as they might see the conflict appear and quickly be resolved, since the changes are always replicated to all listening clients. After resolving the conflict and receiving the updated document back, the conflict handler will behave like the previous example and synchronize the docuemnts accordingly.
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.8\textwidth]{insert_doc_seq_noconf.pdf}
+        \caption{Sequence diagram representing the flow when inserting an event without conflicts}
+        \label{fig:insert_doc_seq_noconf}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.8\textwidth]{insert_doc_seq_conf.pdf}
+        \caption{Sequence diagram representing the flow when inserting an event with conflicts}
+        \label{fig:insert_doc_seq_conf}
+    \end{center}
+\end{figure}
+
 \subsection{Time synchronization}
 
 An important part of a real-time application is the time synchronization between users and the server itself. In this application this is done by clients fetching the game start time from the ZeroZero API, and calculating the game time locally. It has a big problem, as we eventually found out, since clients may not be synchronized with the server themselves. A similar scenario happened inside ZOS, while we were testing the application. Some of the computers in the office had their clocks offset by a couple minutes in relation to the server serving the application. This resulted in a shift on the match minute they were seeing. This happened since the match clock is calculated based on the start time specified on the server and the current client time. In order to fix this problem, and any similar issues that can happen for users in different timezones a offset correction value was added. The clients now send their local time when requesting the match information, and the server will return an offset in relation to its own time, which clients can use to fix the clock calculation, and make sure all are synchronized, independently of their local times.
