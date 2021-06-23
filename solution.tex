@@ -82,12 +82,11 @@ A base set of operations was defined in order to help solve conflicts. As per de
     \item[\textbf{Ignore Conflict}] This is another basic resolution operation. It simply deletes the conflicting revision, basically agreeing with the automatic decision done by CouchDB;
     \item[\textbf{Choose a Winner}] This operation deletes the document passed as conflict and inserts a new revision as the winner;
     \item[\textbf{Keep Both}] This operation resolves conflicts by keeping both documents. Since there can't be two documents with the same id in CouchDB, otherwise they would conflict, it first deletes the conflicting revision, creates a new revision for the current winner, and inserts a new document equal to the conflicting one, but with a UUID\footnote{A UUID (Universally Unique Identifier) is a random 128-bit identifier. \cite{uuid-rfc}} appended to its default id. This ensures that it won't conflict with the existing document, however it has the downside that it won't conflict with anything ever again. While the initial document remains in the database, there will always be a \say{representative} of that set of ids, that will trigger conflicts every time a new document with that id is inserted. If that document is deleted, there is a workaround in place that selects a document from those with the same base id, and removes the random suffix, so that there is always some event to detect the conflicts for future inserts;
-    \item[\textbf{Keep All}] This operation;
 \end{itemize}
 
 Additionally, there are specific resolutions that are triggered on the frontend --- not automatically ---- if the user resolves a conflict by choosing a winner or by keeping all conflicting documents:
 
-\begin{itemize}[leftmargin  = 3.25\parindent, align=left]
+\begin{itemize}[leftmargin  = 3.25\parindent, align=left] \label{list:conflict-resolution-strategies-frontend}
     \item[\textbf{Choose One - Frontend}] When choosing a winner, since there may be multiple conflicts at the same time, it needs to delete them all to fully resolve the conflict. However, if multiple users select different winners by each resolving the conflict differently, in the end they would end up delting all documents. In order to avoid this, after deleting the loser documents, a new revision for the winner is inserted, so that if those multiple users select different winners locally, their choices will still conflict with each other after each \say{round} of conflict resolution. 
     \item[\textbf{Keep All}] This operation is similar to the \textit{Keep Both} operation in concept, but applied to $n$ documents at a time, not only 2 documents. It does so by first deleting all conflicts corresponding to a document id, then inserting new documents equal to the deleted conflicts, but with a UUID appended to the id, to make them unique, and avoid the conflict;
 \end{itemize}
@@ -110,7 +109,7 @@ By leveraging the aformetioned strategies, it's possible to create complex rules
     \item[\textbf{Choose biggest reputation}] Choose as winner the event whose user has the highest reputation;
 \end{itemize}
 
-\subsubsection{Synchronization with ZeroZero API}
+\subsubsection{Synchronization with ZeroZero API} \label{sec:api-sync}
 
 In order to fulfill User Stories \ref{user-story:sync-to-api} and \ref{user-story:sync-from-api}, specific logic was implemented to fetch missing events from the API, and to add them after consensus is reached on the ZeroZero Live platform i.e., there are no conflicts.
 
@@ -230,3 +229,124 @@ After calculating all the deltas for each interaction, they are marked as proces
 
 \subsection{Web Application (Frontend)}
 
+The last component, and arguably the most important --- How would users use the application otherwise? --- is the frontend web application. For browsers, it's a set of HTML, CSS and JavaScript files being served by an Nginx web server. Many web applications have this setup, but let us dive deeper on the process that happens before the generation of those files to be served.
+
+The application is built with React and is essentially a \textit{Single Page Application} (SPA), but regardless of the name, the application provides multiple interfaces, or pages. It doesn't work like the usual multi-page web application, since there is indeed only one page being served --- index.html --- however, the JavaScript, namely the React Router package, handles the routing and the URLs, by rendering different component trees based on the URL, and thus emulating a multi-page setup.
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-login.png}
+        \caption{Login page of zerozero.live}
+        \label{fig:zerozerolive-login}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-home.png}
+        \caption{Homepage of zerozero.live}
+        \label{fig:zerozerolive-home}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-search.png}
+        \caption{Search page of zerozero.live}
+        \label{fig:zerozerolive-search}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-history.png}
+        \caption{History page of zerozero.live}
+        \label{fig:zerozerolive-history}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-teams.png}
+        \caption{Team selection for a match in zerozero.live}
+        \label{fig:zerozerolive-teams}
+    \end{center}
+\end{figure}
+
+The majority of the frontend application was already built before. Figures~\ref{fig:zerozerolive-login}, \ref{fig:zerozerolive-home}, \ref{fig:zerozerolive-search}, \ref{fig:zerozerolive-history} were mostly untouched during the development of this work, as they are of no interest to the real-time multi-user collaboration problem this work addresses. Figure~\ref{fig:zerozerolive-teams} shows the interface to pick the roster of each team. There were no major changes to it apart from fixing an issue where users could not change pages too fast, as it might not submit their information correctly.
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-comments.png}
+        \caption{Comments page for a match in zerozero.live}
+        \label{fig:zerozerolive-comments}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.3\textwidth]{zerozerolive-comments-mobile.jpg}
+        \caption{Comments page for a match in zerozero.live - Mobile version}
+        \label{fig:zerozerolive-comments-mobile}
+    \end{center}
+\end{figure}
+
+Figures~\ref{fig:zerozerolive-comments} and \ref{fig:zerozerolive-comments-mobile}, desktop and mobile interfaces, respectively, represent the page where most of the work was focused: the match commentary. It feature the match information on top, the events list at the middle, as well as the input area on the bottom. It purposefully resembles a chat application, so that it is intuitive for users how to use the application.
+
+It executes some operations in order to present the events to the user. First, it initializes a local PouchDB database, or connects to it if it already exists, and does the same with the remote CouchDB database, except that it doesn't try to create it if it doesn't exist, that is a responsibility of the respective conflict handler. After connecting to both databases, it loads any existing events on the local database to the UI, to promote the offline-first behavior. The user will always see anything the already have locally first. Then it starts the replication listener, in order to listen for remote changes and replicate those to the local database, so that the user can get the remote updates and see the other events on their timeline.
+
+Then, it tries to sync any pending information that is stored locally to the remote database, which may happen when the connection is lost.
+
+At the same time, it will load the match information from the ZeroZero API, including the selected rosters, available event types, score, match time and state and substituted players. This is important in order to load the players correctly when choosing the player for the inputted event. This information is refreshed every 30 seconds.
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-event-select.png}
+        \caption{Event selection}
+        \label{fig:zerozerolive-event-select}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-event-player-select.png}
+        \caption{Event's player selection}
+        \label{fig:zerozerolive-event-player-select}
+    \end{center}
+\end{figure}
+
+As was previously mentioned, a big part of this project is the synchronization with the ZeroZero API events. On startup, the application will check which event are on the API registry that are currently not on the ZeroZero Live database. If it finds any, it will try to synchronize them by inserting them in the local PouchDB database, and then replicating to the remote database. The complete algorithm is mentioned in more detail above, on Section~\ref{sec:api-sync}. 
+
+%events interactions(insert, edit delete) (to local then remote)
+Regarding the event operations, namely insert, edit, and delete, the process is similar to each of them. A document is pushed to the local database, which makes it show on the UI for the user. Then it is synchronized to the remote database which, due to the replication listener will make it show on other users' machines as well, as soon as it replicates to their local databases. It may happen that during these replications a conflict arises. In those cases, the conflict icon is shown on the event, and the user can resolve the conflict after clicking there and examining the solution candidates. Figure~\ref{fig:zerozerolive-conflict-resolution} shows the conflict resolution interface, where the user can select a \say{winner} event, or choose to keep all events in the match. The resolutions strategies were already discussed above, in Section~\ref{list:conflict-resolution-strategies-frontend}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-conflict-event.png}
+        \caption{Event with a conflict pending resolution}
+        \label{fig:zerozerolive-conflict-event}
+    \end{center}
+\end{figure}
+
+\begin{figure}[ht]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=0.7\textwidth]{zerozerolive-conflict-resolution.png}
+        \caption{Event conflict resolution interface}
+        \label{fig:zerozerolive-conflict-resolution}
+    \end{center}
+\end{figure}
+
+\subsection{Time synchronization}
+
+An important part of a real-time application is the time synchronization between users and the server itself. In this application this is done by clients fetching the game start time from the ZeroZero API, and calculating the game time locally. It has a big problem, as we eventually found out, since clients may not be synchronized with the server themselves. A similar scenario happened inside ZOS, while we were testing the application. Some of the computers in the office had their clocks offset by a couple minutes in relation to the server serving the application. This resulted in a shift on the match minute they were seeing. This happened since the match clock is calculated based on the start time specified on the server and the current client time. In order to fix this problem, and any similar issues that can happen for users in different timezones a offset correction value was added. The clients now send their local time when requesting the match information, and the server will return an offset in relation to its own time, which clients can use to fix the clock calculation, and make sure all are synchronized, independently of their local times.
