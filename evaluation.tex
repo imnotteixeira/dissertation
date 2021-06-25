@@ -39,7 +39,7 @@ Over the course of about five weeks, as soon as there was a usable product, they
 In those coverages, most of the times the events' count surpassed the 100th mark. However, as mentioned earlier, not many conflicts happened, since there was only one user per game.
 When asked about the number of conflicts, journalists classified the number as very low, as expected. They, also as expected, believed the events corresponded to the match's truth. Finally, they were able to cover the matches without problems and would use the tool again, according to the questionnaires.
 
-This validates the product on the journalist use-case. The tool allows CRUD\footnote{CRUD stands for Create-Read-Update-Delete, the most basic data-related operations a system can provide} operations and synchronizes to and from the ZeroZero's API, allowing them to insert, edit and delete events regarding a live match, which can be followed both on ZeroZero and on ZeroZero Live.
+This validates the product on the journalist use-case. The tool allows CRUD\footnote{CRUD stands for Create-Read-Update-Delete, the four basic data-related operations a system can provide} operations and synchronizes to and from the ZeroZero's API, allowing them to insert, edit and delete events regarding a live match, which can be followed both on ZeroZero and on ZeroZero Live.
 
 Next, the casual user's experience was evaluated, the analysis as available in the next subsection.
 
@@ -47,9 +47,40 @@ Next, the casual user's experience was evaluated, the analysis as available in t
 % work in groups, crowdsourcing, in theory more conflicts
 % portugal france experiment
 
-Casual users have a slightly different use-case. While they too rely on CRUD operations in order to insert, edit adn delete events, it's expected that they don't rely as much on ZeroZero Api synchronization, as they will follow the game directly on ZeroZero Live. Additionally, a bigger difference relies on the number of participants per match, which is expected to be higher, contributing to the crowdsourcing nature of the tool. This raises the probability of event conflicts happening, which adds relevance to this work, regarding the automatic conflict resoliution. In this subsection, the system will be evaluated in that regard.
+Casual users have a slightly different use-case. While they too rely on CRUD operations in order to insert, edit and delete events, it's expected that they don't rely as much on ZeroZero API synchronization, as they will follow the game directly on ZeroZero Live. Additionally, a bigger difference relies on the number of participants per match, which is expected to be higher, contributing to the crowdsourcing nature of the tool. This raises the probability of event conflicts happening, which adds relevance to this work, regarding the automatic conflict resoliution. In this section, the system will be evaluated in that regard.
 
-In order to prepare this type of experements, a clone of ZeroZero Live was used. This clone was different in terms of features in order to focus on the conflict resolution. It also had no connection to the ZeroZero API, in terms of inserting events or making any changes to the teams for example. Additionally, authentication was not required which allowed for and experiment on a relevant match, live, with no side effects on the ZeroZero platform. The chosen match was Portugal vs. France on the 23rd of June, regarding the Euro2020 group stage. Being a game involving Portugal's team, a long time rival as France, and the last match of the group stage, which Portugal could fail to pass, it was very important and many people would watch it, which meant many people to cover it and experiment the tool.
+In order to prepare this type of experiments, a clone of ZeroZero Live was used. This clone was different in terms of features in order to focus on the conflict resolution. It also had no connection to the ZeroZero API, in terms of inserting events or making any changes to the teams for example. Additionally, authentication was not required which allowed for and experiment on a live relevant match, with no side effects on the ZeroZero platform. The chosen match was Portugal vs. France on the 23rd of June, regarding the Euro2020 group stage. Being a game involving Portugal's team, a long time rival as France, and the last match of the group stage, which Portugal could fail to pass, it was very important and many people would watch it, which meant many people to cover it and experiment the tool.
+
+A total of 12 participants were included in the experiment. They were divided into 3 groups, which consisted of a control group (C1) and two experimental groups (E1 and E2). The control group had no automatic conflict resolution in place, whereas the other two groups had the automatic conflict resolution feature active. The application recorded the following metrics in order to help the analysis:
+
+\begin{description}
+    \item[Conflicts] Every time a conflict occurred, it was stored as a metric entry. When it was resolved, the entry was updated in order to know the conflict resolution time;
+    \item[Number of Events] The total number of events in a match, as perceived by each user;
+    \item[Number of Participants] The number of participants in a match (not necessarily participating actively)
+\end{description}
+
+In order to record these metrics, a new microservice was developed to record them. It exposed a simple HTTP API and reused the same existing MongoDB instance used for the reputation system, creating a new collection to store the metrics, for easy inspection.
+
+\begin{table}[h]
+    \centering
+    \caption{Relation between number of events, participants and generated conflicts}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Metric}        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        Number of Events       & 35 & 39 & 36 \\ \hline
+        Number of Participants & 4  & 5  & 3  \\ \hline
+        Number of Conflicts\footnotemark    & 3  & 1  & 0  \\ \hline
+    \end{tabular}
+    \label{table:num-events-participants-conflicts}
+\end{table}
+
+\footnotetext{The conflict on E1 was actually automatically resolved by the application.}
+
+Table~\ref{table:num-events-participants-conflicts} shows the relation between the number of events, participants and generated conflicts. It is possible to see that the number of events does not vary much among the experiments. This can be explained by the fact that all participants were inexperienced in using the application, and watching the same match. For comparison purposes, the journalist that was covering the same match officially produced a total of 149 events, more than 3.8 times the most commented match (E1). We can also verify that the number of events does not scale with the number of participants, since E1 had two more participants than E2 (67\% increase), but only an 8.3\% increase in the number of events.
+
+One can also note that the number of conflicts is higher on the environment where there was no automatic conflict resolution, as expected. However is not as high as expected --- only 8.6\% of the events conflicted. This can be explained by two factors: first, all users were watching the game remotelly, i.e., on the television or through some video stream on the internet. These transmissions are subject to variable delays, when compared to the game happening in real time, which resulted in different users watching the game out of sync compared to each other. Additionally, although no user had any prior experience with the application, different users have different times to insert events. All of this results in some users inputting events slower than others, and if someone inputs the same event earlier --- which would result in a conflict --- they end up stopping their input and avoiding the conflict altogether. Another phenonmenon that happened, still due to the reasons outlined above, was that the slower users would input the events after someone did, and inadvertedly overwrite them, since they had already received them at the moment of insertion, bypassing the conflicts.
+
+todo table de conflict times e conflicts over time a explicar que pessoas ignoraram cada vez mais ao longo do tempo
 
 {\Huge TODO control vs experiments (how many groups/people) + results}
 {\Huge TODO falar do metrics service que guardava info sobre conflitos e num evts}
