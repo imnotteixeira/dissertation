@@ -80,8 +80,41 @@ Table~\ref{table:num-events-participants-conflicts} shows the relation between t
 
 One can also note that the number of conflicts is higher on the environment where there was no automatic conflict resolution, as expected. However is not as high as expected --- only 8.6\% of the events conflicted. This can be explained by two factors: first, all users were watching the game remotelly, i.e., on the television or through some video stream on the internet. These transmissions are subject to variable delays, when compared to the game happening in real time, which resulted in different users watching the game out of sync compared to each other. Additionally, although no user had any prior experience with the application, different users have different times to insert events. All of this results in some users inputting events slower than others, and if someone inputs the same event earlier --- which would result in a conflict --- they end up stopping their input and avoiding the conflict altogether. Another phenonmenon that happened, still due to the reasons outlined above, was that the slower users would input the events after someone did, and inadvertedly overwrite them, since they had already received them at the moment of insertion, bypassing the conflicts.
 
-todo table de conflict times e conflicts over time a explicar que pessoas ignoraram cada vez mais ao longo do tempo
+\begin{table}[h]
+    \centering
+    \caption{Conflict resolution times and user perception}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Metric}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        Number of Conflicts                    & 3  & 1  & 0  \\ \hline
+        Average conflict resolution time (s)   & 92.7  & 0.7  & 0  \\ \hline
+        Average percepted level of conflicts (1-5)     & 2  & 1.25  & 1  \\ \hline
+    \end{tabular}
+    \label{table:num-conflicts-time-perception}
+\end{table}
 
-{\Huge TODO control vs experiments (how many groups/people) + results}
-{\Huge TODO falar do metrics service que guardava info sobre conflitos e num evts}
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis} [ybar,xmin=0,xmax=90,xtick distance=10,
+            ylabel=Number of Conflicts,
+            xlabel=Match Minute
+            ]
+            \addplot coordinates {
+                (15,1) 
+                (21,1) 
+                (34,1) 
+            };
+    \end{axis}
+    
+    \end{tikzpicture}
+    \caption{Conflicts over game time (C1)}
+    \label{chart:conflicts-over-time}
+\end{figure}
 
+As it can be seen from the data on Table~\ref{table:num-conflicts-time-perception}, in experiment C1 --- the control, where no automated conflict resolution was present --- there were 3 reported conflicts, which took, on average, 92.7 seconds to resolve. As expected, according to the questionnaire, the users perceived a higher amount of conflicts, although they still reported the level of conflicts to be only 2 points out of 5. On the other experiments, this value is lower --- 1 being the minimum --- which makes sense considering the amount of conflicts.
+
+On figure~\ref{chart:conflicts-over-time}, one can notice that all of the conflicts happened on the first half, and most of them before the 30th minute. This confirms the idea that users are more active at the beginning of the match, especially considering that this match had many important events on the second half, including two goals, penalties and substitutions, which didn't lead to conflicts.
+
+
+todo resolution time over time, satisfaçao com plat, would use again? localizar e resolver conflicts
