@@ -31,8 +31,8 @@ In order to better understand how the user is interacting with the application a
 
 \section{The Journalist Use-Case}
 % often works alone, relies on the correct api sync (uses a more broad set of events)
-% constant feddback-deployment loop
-When covering a match, journalists usually work alone, as they are assigned different matches to cover. As such, they rarely face conflicts, but they also rely on the API syncronization feature heavily, as it is literally their job to keep the events they are covering up to date on the ZeroZero platform. This means they are an excelent feedback source on how the application works, overall. They provide the software verification feedback, but also validation.
+% constant feedback-deployment loop
+When covering a match, journalists usually work alone, as they are assigned different matches to cover. As such, they rarely face conflicts, but they also rely on the API synchronization feature heavily, as it is literally their job to keep the events they are covering up to date on the ZeroZero platform. This means they are an excellent feedback source on how the application works, overall. They provide the software verification feedback, but also validation.
 
 Over the course of about five weeks, as soon as there was a usable product, they used it in production, pin-pointing issues and suggestions on how to make it better for their use-cases. There was a constant \say{deploy, feedback, adapt} loop, which allowed for a faster discovery of problems and their solutions. As of today, the ZeroZero Live platform as been used to cover more than 7 Euro2020 matches in production.
 
@@ -41,13 +41,13 @@ When asked about the number of conflicts, journalists classified the number as v
 
 This validates the product on the journalist use-case. The tool allows CRUD\footnote{CRUD stands for Create-Read-Update-Delete, the four basic data-related operations a system can provide} operations and synchronizes to and from the ZeroZero's API, allowing them to insert, edit and delete events regarding a live match, which can be followed both on ZeroZero and on ZeroZero Live.
 
-Next, the casual user's experience was evaluated, the analysis as available in the next subsection.
+Next, the casual user's experience was evaluated, the analysis as available in the next section.
 
 \section{The Casual User Use-Case}
 % work in groups, crowdsourcing, in theory more conflicts
 % portugal france experiment
 
-Casual users have a slightly different use-case. While they too rely on CRUD operations in order to insert, edit and delete events, it's expected that they don't rely as much on ZeroZero API synchronization, as they will follow the game directly on ZeroZero Live. Additionally, a bigger difference relies on the number of participants per match, which is expected to be higher, contributing to the crowdsourcing nature of the tool. This raises the probability of event conflicts happening, which adds relevance to this work, regarding the automatic conflict resoliution. In this section, the system will be evaluated in that regard.
+Casual users have a slightly different use-case. While they too rely on CRUD operations in order to insert, edit and delete events, it's expected that they don't rely as much on ZeroZero API synchronization, as they will follow the game directly on ZeroZero Live. Additionally, a bigger difference relies on the number of participants per match, which is expected to be higher, contributing to the crowdsourcing nature of the tool. This raises the probability of event conflicts happening, which adds relevance to this work, regarding the automatic conflict resolution. In this section, the system will be evaluated in that regard.
 
 In order to prepare this type of experiments, a clone of ZeroZero Live was used. This clone was different in terms of features in order to focus on the conflict resolution. It also had no connection to the ZeroZero API, in terms of inserting events or making any changes to the teams for example. Additionally, authentication was not required which allowed for and experiment on a live relevant match, with no side effects on the ZeroZero platform. The chosen match was Portugal vs. France on the 23rd of June, regarding the Euro2020 group stage. Being a game involving Portugal's team, a long time rival as France, and the last match of the group stage, which Portugal could fail to pass, it was very important and many people would watch it, which meant many people to cover it and experiment the tool.
 
@@ -78,7 +78,7 @@ In order to record these metrics, a new microservice was developed to record the
 
 Table~\ref{table:num-events-participants-conflicts} shows the relation between the number of events, participants and generated conflicts. It is possible to see that the number of events does not vary much among the experiments. This can be explained by the fact that all participants were inexperienced in using the application, and watching the same match. For comparison purposes, the journalist that was covering the same match officially produced a total of 149 events, more than 3.8 times the most commented match (E1). We can also verify that the number of events does not scale with the number of participants, since E1 had two more participants than E2 (67\% increase), but only an 8.3\% increase in the number of events.
 
-One can also note that the number of conflicts is higher on the environment where there was no automatic conflict resolution, as expected. However is not as high as expected --- only 8.6\% of the events conflicted. This can be explained by two factors: first, all users were watching the game remotelly, i.e., on the television or through some video stream on the internet. These transmissions are subject to variable delays, when compared to the game happening in real time, which resulted in different users watching the game out of sync compared to each other. Additionally, although no user had any prior experience with the application, different users have different times to insert events. All of this results in some users inputting events slower than others, and if someone inputs the same event earlier --- which would result in a conflict --- they end up stopping their input and avoiding the conflict altogether. Another phenonmenon that happened, still due to the reasons outlined above, was that the slower users would input the events after someone did, and inadvertedly overwrite them, since they had already received them at the moment of insertion, bypassing the conflicts.
+One can also note that the number of conflicts is higher on the environment where there was no automatic conflict resolution, as expected. However is not as high as expected --- only 8.6\% of the events conflicted. This can be explained by two factors: first, all users were watching the game remotely, i.e., on the television or through some video stream on the internet. These transmissions are subject to variable delays, when compared to the game happening in real time, which resulted in different users watching the game out of sync compared to each other. Additionally, although no user had any prior experience with the application, different users have different times to insert events. All of this results in some users inputting events slower than others, and if someone inputs the same event earlier --- which would result in a conflict --- they end up stopping their input and avoiding the conflict altogether. Another phenomenon that happened, still due to the reasons outlined above, was that the slower users would input the events after someone did, and inadvertedly overwrite them, since they had already received them at the moment of insertion, bypassing the conflicts.
 
 \begin{table}[h]
     \centering
@@ -88,7 +88,7 @@ One can also note that the number of conflicts is higher on the environment wher
         \textbf{Metric}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
         Number of Conflicts                    & 3  & 1  & 0  \\ \hline
         Average conflict resolution time (s)   & 92.7  & 0.7  & 0  \\ \hline
-        Average percepted level of conflicts (1-5)     & 2  & 1.25  & 1  \\ \hline
+        Average perceived level of conflicts (1-5)     & 2  & 1.25  & 1  \\ \hline
     \end{tabular}
     \label{table:num-conflicts-time-perception}
 \end{table}
@@ -112,9 +112,59 @@ One can also note that the number of conflicts is higher on the environment wher
     \label{chart:conflicts-over-time}
 \end{figure}
 
-As it can be seen from the data on Table~\ref{table:num-conflicts-time-perception}, in experiment C1 --- the control, where no automated conflict resolution was present --- there were 3 reported conflicts, which took, on average, 92.7 seconds to resolve. As expected, according to the questionnaire, the users perceived a higher amount of conflicts, although they still reported the level of conflicts to be only 2 points out of 5. On the other experiments, this value is lower --- 1 being the minimum --- which makes sense considering the amount of conflicts.
+As it can be seen from the data on Table~\ref{table:num-conflicts-time-perception}, in experiment C1 --- the control, where no automated conflict resolution was present --- there were 3 reported conflicts, which took, on average, 92.7 seconds to resolve. As expected, according to the questionnaire, the users perceived a higher amount of conflicts, although they still reported the level of conflicts to be only 2 points out of 5. On the other experiments, this value is lower --- 1 being the minimum --- which makes sense considering the amount of conflicts --- there was only a conflict in experiment E1, and it was automatically resolved by the platform, resulting in a resolution time of only 0.7 seconds.
 
 On figure~\ref{chart:conflicts-over-time}, one can notice that all of the conflicts happened on the first half, and most of them before the 30th minute. This confirms the idea that users are more active at the beginning of the match, especially considering that this match had many important events on the second half, including two goals, penalties and substitutions, which didn't lead to conflicts.
 
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis} [ybar,xmin=0,xmax=90,xtick distance=10,
+            ylabel=Conflict resolution time (s),
+            xlabel=Match Minute
+            ]
+            \addplot coordinates {
+                (15, 53.7) 
+                (21, 42.2) 
+                (34, 207.4) 
+            };
+    \end{axis}
+    
+    \end{tikzpicture}
+    \caption{Conflicts resolution time over game time (C1)}
+    \label{chart:conflicts-res-time-over-time}
+\end{figure}
 
-{\Huge todo resolution time over time, satisfaçao com plat, would use again? localizar e resolver conflicts}
+\begin{table}[h]
+    \centering
+    \caption{Manual conflict resolution user evaluation}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Metric (1-5)}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        Average "Easiness of conflict location"   & 4  & 4.75  & 5  \\ \hline
+        Average "Easiness of conflict resolution"   & 3.5  & 4.75  & 5  \\ \hline
+    \end{tabular}
+    \label{table:conflicts-resolution-user-perception}
+\end{table}
+
+Figure~\ref{chart:conflicts-res-time-over-time} shows the resolution time of conflicts over match time. Ideally the value should be much lower --- no more than 10 seconds --- however it always exceeded the 40 seconds mark, which is confirmed by the average "Easiness of conflict location" and "Easiness of conflict resolution" metrics being lower in C1, when compared to E1 and E2, according to Table~\ref{table:conflicts-resolution-user-perception}. 
+
+\begin{table}[h]
+    \centering
+    \caption{User evaluation of the platform}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Metric}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        Average "The platform allowed me cover the match without issues" (1-5)   & 3.5  & 5  & 4.7  \\ \hline
+        \% "Would use again"   & 100\%  & 100\%  & 100\%  \\ \hline
+    \end{tabular}
+    \label{table:user-platform-evaluation}
+\end{table}
+
+Finally, Table~\ref{table:user-platform-evaluation} shows the metrics used to evaluate the UX. As expected, the environment where conflicts were not automatically resolved, the users reported a lower satisfaction value --- 3.5 out of 5 --- nevertheless, all of them answered yes when questioned if they would use the application again. This might be due to the application purpose and idea itself, and not so much on the current implementation or issues.
+
+It also worth to note that these experiments were not made with a significant amount of users, so the results may be biased towards this specific match or set of users, and this evaluation should take this into account.
+
+\section{Summary}
+
+In summary, we can say that the application reached a minimum level of quality in order to reach the production staged, and it was use to cover some important matches such is the case of the Euro2020 Group Stage. Journalists found it to be an improvement in UX when compared to the older platform, which was one of the goals. When considering casual users, where the real-time and conflict handling features are more relevant, we noted that the experience improved with the conflict resolution feature, when compared to an environment without it. The conflict resolution times were still too high, which may be due to the fact that the users covering the match were not as involved in it as a professional journalist would be, and would take longer to detect a conflict in the UI, since they would be watching the match instead, as the quality of the coverage is not their main focus. This confirms the hypothesis that \say{A conflict-resolution system improves the user experience in a real-time multi-user crowdsourcing environment}, however, there are still not enough users to validate it strongly.
