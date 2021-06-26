@@ -2,7 +2,7 @@
 
 \section*{}
 
-This chapter describes the problem tackled in this dissertation, including the planned features and the expected result. Section~\ref{sec:prob-def} presents the features to be developed in User Story format, and lists some additional technical requirements. Later, in Section~\ref{sec:research-questions}, research questions are specified, for which this work aims to provide answers.
+This chapter describes the problem tackled in this work, including the planned features and the expected result. Section~\ref{sec:prob-def} presents the features to be developed in User Story format, some additional technical requirements are presented in Section~\ref{sec:tech-reqs}. Later, in Section~\ref{sec-hyposthesis}, this work's hypothesis is presented and in Section~\ref{sec:research-questions}, some research questions are specified, for which this work aims to provide answers.
 
 The implemented solution for this problem is presented in the next chapter.  
 
@@ -31,22 +31,20 @@ The features of the prototype are described as follows, in User Story format\foo
     \item\label{user-story:sync-from-api} As an official ZeroZero reporter, I want to be able to input events on the old platform, and have them synced to ZeroZero Live, so that I can use other tooling that depends on it to provide statistics, and still be able to comment manually on ZeroZero Live.
 \end{enumerate}
 
-\section{Technical Requirements}
+\section{Technical Requirements}\label{sec:tech-reqs}
 
 Apart from the functional requirements above, the tool should adhere to the following technical requirements:
 
 \begin{enumerate}[leftmargin  = 3.25\parindent, align=left, label=TR\arabic*, start=1]
     \item The system should use the authentication API from ZeroZero in order to authenticate users and provide session functionality;
     \item Changes and updates to the application should not require total outages of service;
-    \item There will be sufficient logging to quicly identify system problems;
+    \item There will be sufficient logging to quickly identify system problems;
     \item The tool should be available as a web application, able to work on any browser (desktop, tablet or mobile);
     \item The application may require an internet connection on setup, but should be resilient to network failures mid-session;
     \item The system should be horizontally scalable as the number of users grows;
 \end{enumerate}
 
-{\Huge TODO: research questions, hypotesys etc}
-
-\section{Hypothesis}
+\section{Hypothesis}\label{sec-hyposthesis}
 
 This work is done to test the following hypothesis:
 
@@ -54,7 +52,7 @@ This work is done to test the following hypothesis:
     \say{\textit{A conflict-resolution system improves the user experience in a real-time multi-user crowdsourcing environment.}}
 \end{quote}
 
-User Experience can mean many things. In this work, it will be coupled with satisfaction of use, and willingness to keep using the product. In order to verify this hypothesis, an existing prototype for the ZeroZero Live application was extended in order to include the real-time, offline tollerance, and conflict resolution features. By exposing this version to journalists and common users, it was possible to measure their interactions and how they felt with regards to the application. That analysis is present in Chapter~\ref{chap:evaluation-and-analysis}.
+User Experience can mean many things. In this work, it will be coupled with satisfaction of use, and willingness to keep using the product. In order to verify this hypothesis, an existing prototype for the ZeroZero Live web application was extended in order to include the real-time, offline tolerance, and conflict resolution features. By exposing this version to journalists and common users, it was possible to measure their interactions and how they felt with regards to the application. That analysis is present in Chapter~\ref{chap:evaluation-and-analysis}.
 
 \section{Research Questions}\label{sec:research-questions}
 
@@ -72,5 +70,5 @@ Additionally, an since this question is too generic, there are a few more resear
 
 \section{Summary}
 
-In summary, we intend to research the impact of conflict resolution on a real-time, offline-tolerant crowdsourcing environment. To verify that, a multi-user real-time application allowing the coverage of sporting events with offline tolerance will be developed. That entails the existance of conflict resolution strategies, as well as a reputation system, which should take time into consideration, making reputation more dynamic. All of this should be integrable with the existing ZeroZero system, and use modern strategies to solve the technologic challenges.
+In summary, we intend to research the impact of conflict resolution on a real-time, offline-tolerant crowdsourcing environment. To verify that, a multi-user real-time application allowing the coverage of sporting events with offline tolerance will be developed. That entails the existence of conflict resolution strategies, as well as a reputation system, which should take time into consideration, making reputation more dynamic. All of this should be integrable with the existing ZeroZero system, and use modern strategies to solve the technological challenges.
 
