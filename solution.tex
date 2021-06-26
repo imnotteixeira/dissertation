@@ -64,7 +64,7 @@ This will ensure that we have a basic conflict detection, however it can easily 
 
 To improve the experience, a conflict handler is needed, in order to automatically solve conflicts as best as possible.
 
-There are two concepts to understand going forward: events, and documents. Events are the instances of events, as used by the ZeroZero API, such as a \textit{Goal}, \textit{Own Goal}, or \textit{Big Scoring Opportunity}. These include the event type id, their category, some template text and a representative image to be rendered associated with it, among other fields. The complete list of events is present in Annex~\ref{annex:api-events}. Documents is a wrapper on the API events, which are stored in the CouchDB database, and used on the ZeroZero Live exclusively. They are structured as follows:
+There are two concepts to understand going forward: events, and documents. Events are the instances of events, as used by the ZeroZero API, such as a \textit{Goal}, \textit{Own Goal}, or \textit{Big Scoring Opportunity}. These include the event type id, their category, some template text and a representative image to be rendered associated with it, among other fields. The complete list of events is present in Appendix~\ref{annex:api-events}. Documents is a wrapper on the API events, which are stored in the CouchDB database, and used on the ZeroZero Live exclusively. They are structured as follows:
 
 \begin{description}
     \item[\_id] the document id, used to detect conflicts, as explained above;
