@@ -104,7 +104,42 @@ This is a Node.js process that will use PouchDB to connect to the remote CouchDB
 
 As it was mentioned earlier, all CouchDB documents have an $\_id$ and a $\_rev$ (as in \textit{revision}). When \textit{putting} a document --- CouchDB has a \textit{put} operation that allows insertions, edits and deletions, depending on the given argument --- if there is already an object with the same $\_id$, CouchDB will try to update it, however if the $\_rev$ does not match, a conflict is generated. For insertions, it only requires an object with at least an $\_id$ field. For edits, it requires the object with an $\_id$, referring to the document to be edited, and a $\_rev$, corresponding to the current revision of the document to be edited. For deletions, it requires the $\_id$, $\_rev$ and a $\_deleted$ field with a value of $true$, which is a special case of the edit operation. The deleted documents are not really removed from the database until a compaction operation\footnote{https://docs.couchdb.org/en/stable/maintenance/compaction.html} is performed to clean the deleted documents and older revisions are stripped, leaving only the necessary data required for conflict resolution operations.
 
-Document revisions have two components: a number indicating their level in the tree of updates of that document, and a unique identifier. When a document is inserted, the generated revision starts with 1, and every time it updates, the successive revisions will have consecutive values e.g., 2, 3, and so on. This means that, considering two users are synchronized with the remote database which has a document with a revision of \say{1-xyz}, if they both want to update that document at the same time, they will both try to \textit{put} a document with \say{1-xyz} as its parent node. When CouchDB receives the requests, it will generate a revision for each, starting with 2, since their parent node revision starts with 1. One of them will be chosen as winner, and the other will conflict, since there are two documents on the same level: 2. The winner is automatically and deterministically chosen by CouchDB, so that every replica of the database is consistent, and it will store the conflicts for each document as well, then it's up to the application layer to resolve the conflict as needed. The primary focus of this work starts here, by applying automatic conflict resolution strategies between the automatic CouchDB winner selection and the manual user conflict resolution that may happen afterwards.
+Document revisions have two components: a number indicating their level in the tree of updates of that document, and a unique identifier. When a document is inserted, the generated revision starts with 1, and every time it updates, the successive revisions will have consecutive values e.g., 2, 3, and so on. This means that, considering two users are synchronized with the remote database which has a document with a revision of \say{1-xyz}, if they both want to update that document at the same time, they will both try to \textit{put} a document with \say{1-xyz} as its parent node. When CouchDB receives the requests, it will generate a revision for each, starting with 2, since their parent node revision starts with 1. One of them will be chosen as winner, and the other will conflict, since there are two documents on the same level: 2. The winner is automatically and deterministically chosen by CouchDB, so that every replica of the database is consistent, and it will store the conflicts for each document as well, then it's up to the application layer to resolve the conflict as needed. Figure~\ref{graph:couchdb-document-history} shows the history of a document's revisions, it starts on the revision level 1, then an edit generates the level 2 revision, and on the third level, there is a generated conflict, since two users tried to update it, by specifying the same root revision: \say{2-a}. CouchDB automatically chose revision \say{3-b} as the winner, but it still kept the \say{3-a} revision in memory. Figure~\ref{graph:couchdb-document-history-resolution} shows the same scenario, but adds the conflict resolution process, which works by deleting the revision we want to discard --- \say{3-b} in this case --- and since revision \say{3-a} becomes the only non-deleted leaf revision, it automatically becomes the winner and will be returned when someone fetches this document latest revision. The primary focus of this work starts here, by applying automatic conflict resolution strategies between the automatic CouchDB winner selection and the manual user conflict resolution that may happen afterwards.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[t]{.5\textwidth}
+        \centering
+        \begin{tikzpicture}[node distance={15mm}, thick, main/.style = {draw, circle}] 
+            \node[main] (1) {1-a};
+            \node[main] (2) [below of=1] {2-a};
+            \node[main] (3) [below left of=2] {3-a};
+            \node[main, label=below:{\small automatic winner}] (4) [below right of=2] {3-b};
+            \draw[->] (1) -- (2);
+            \draw[->] (2) -- (3);
+            \draw[->] (2) -- (4);
+        \end{tikzpicture} 
+        \caption{Document revision history (conflict)}
+        \label{graph:couchdb-document-history}
+    \end{subfigure}%
+    \begin{subfigure}[t]{.5\textwidth}
+      \centering
+      \begin{tikzpicture}[node distance={15mm}, thick, main/.style = {draw, circle}] 
+        \node[main] (1) {1-a};
+        \node[main] (2) [below of=1] {2-a};
+        \node[main, label=below:{\small winner, after resolution}] (3) [below left of=2] {3-a};
+        \node[main] (4) [below right of=2] {3-b};
+        \node[main, label=below:{\small \_deleted=true}] (5) [below of=4] {4-b};
+        \draw[->] (1) -- (2);
+        \draw[->] (2) -- (3);
+        \draw[->] (2) -- (4);
+        \draw[->] (4) -- (5);
+    \end{tikzpicture} 
+    \caption{Document revision history (conflict) with conflict resolution}
+    \label{graph:couchdb-document-history-resolution}
+    \end{subfigure}
+    \caption{Document revision history --- CouchDB model}
+    \end{figure}
 
 \subsection{Base conflict resolution strategies}
 

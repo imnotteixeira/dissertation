@@ -2,13 +2,21 @@
 
 \section*{}
 
-This chapter describes the problem tackled in this work, including the planned features and the expected result. Section~\ref{sec:prob-def} presents the features to be developed in User Story format, some additional technical requirements are presented in Section~\ref{sec:tech-reqs}. Later, in Section~\ref{sec-hyposthesis}, this work's hypothesis is presented and in Section~\ref{sec:research-questions}, some research questions are specified, for which this work aims to provide answers.
+This chapter describes the problem tackled in this work, including the planned features and the expected result. Section~\ref{sec:key-concepts} provides some key concepts used throughout the document, Section~\ref{sec:prob-def} presents the features to be developed in User Story format, some additional technical requirements are presented in Section~\ref{sec:tech-reqs}. Later, in Section~\ref{sec-hyposthesis}, this work's hypothesis is presented and in Section~\ref{sec:research-questions}, some research questions are specified, for which this work aims to provide answers.
 
 The implemented solution for this problem is presented in the next chapter.  
 
+\section{Problem Definition}\label{sec:key-concepts}
+There are some key concepts that will be mentioned throughout this document which are relevant to distinguish, regarding the platforms related to this work.
+\begin{description}
+    \item[ZeroZero] the ZeroZero website (zerozero.pt), which currently is used by users to follow and by journalists to cover matches;
+    \item[ZeroZero API] the API that powers the ZeroZero website; it provides teams and players information, as well as match details, so it will also be used by ZeroZero Live;
+    \item[ZeroZero Live] used interchangeably with zerozero.live --- the domain through which it can be accessed --- is the new application, to be developed in this work.
+\end{description}
+
 \section{Problem Definition}\label{sec:prob-def}
 
-As mentioned in the Introduction (Chapter~\ref{chap:intro}), the project's goal is to develop a web application that allows users to follow a sporting event in a real-time chat-like environment where everyone can input game events. For users that are just following, it would work as live coverage of the event; for contributors, it should be resilient to network failures due to stadiums' Wi-Fi limitations.
+The project's goal is to develop a web application that allows users to follow a sporting event in a real-time chat-like environment where everyone can input game events. For users that are just following, it would work as live coverage of the event; for contributors, it should be resilient to network failures due to stadiums' Wi-Fi limitations.
 Due to the above goal, some necessary features start to surface, such as real-time conflict resolution and the inherent reputation system for tie-breaking when necessary. 
 
 A prototype that allows event submission is already available, and since it is using React, which is an appropriate technology for this task, it will be kept. Some features still need to be polished, but most of the UI is already done, which will allow a bigger focus on the actual real-time conflict resolution problem.
