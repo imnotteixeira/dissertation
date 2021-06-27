@@ -339,13 +339,30 @@ After calculating all the deltas for each interaction, they are marked as proces
     repIncrement = (1 - userRep) * avgDeltas;
 \end{equation}
 
-% {\Huge  ???? Talk about constant values choice e graficos com predicts e exemplos de user behavior}
+\begin{table}[h]
+    \centering
+    \caption{Reputation service constant values}
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Constant}                   & \textbf{Value} \\ \hline
+        Initial User Reputation             & 0.2 \\ \hline
+        Base Input Reputation               & 0.01    \\ \hline
+        Maximum Input Reputation Reward     & 0.05    \\ \hline
+        Maximum Input Reputation Punishment & 0.1    \\ \hline
+        User Reputation Influence           & 0.2    \\ \hline
+        Explicit Agreement Bonus            & 0.2    \\ \hline
+        Reputation Decay Coefficient        & 0.85    \\ \hline
+    \end{tabular}
+    \label{table:reputation-constants}
+\end{table}
+
+The used constant values are defined in Table~\ref{table:reputation-constants}. With this configuration, it takes approximately one month --- 4 weeks --- for a user to lose half of their reputation.
 
 \section{Web Application (Frontend)}
 
 The last component, and arguably the most important --- How would users use the application otherwise? --- is the frontend web application. For browsers, it's a set of HTML, CSS and JavaScript files being served by an Nginx web server. Many web applications have this setup, but let us dive deeper on the process that happens before the generation of those files to be served.
 
-The application is built with React and is essentially a \textit{Single Page Application} (SPA), but regardless of the name, the application provides multiple interfaces, or pages. It doesn't work like the usual multi-page web application, since there is indeed only one page being served --- index.html --- however, the JavaScript, namely the React Router package, handles the routing and the URLs, by rendering different component trees based on the URL, and thus emulating a multi-page setup.
+The application is built with React and is essentially a \textit{Single Page Application} (SPA), but regardless of the nomenclature, the application provides multiple interfaces, or pages. It doesn't work like the usual multi-page web application, since there is indeed only one page being served --- index.html --- however, the JavaScript, namely the React Router package, handles the routing and the URLs, by rendering different component trees based on the URL, and thus emulating a multi-page setup.
 
 \begin{figure}[h]
     \begin{center}

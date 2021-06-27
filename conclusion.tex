@@ -2,21 +2,33 @@
 
 \section*{}
 
-{\Huge TODO} \\
+This chapter is divided into various sections. Section~\ref{sec:conc-contributions} outlines the contributions made during this work. An overview on the achieved results is present in Section~\ref{sec:conc-results}. Section~\ref{sec:difficulties} details the difficulties faced during the development and realization of this work. Finally, Section~\ref{sec:conc-future-work} will delineate future paths for this work, which can bring value to the product and research.
 
-This document had two goals. First, it allowed for better research on the existing work about the topics that will be covered by the application, providing a better context and improving future design decisions. Second, it served as an initial look at how the problem could be tackled, proposing some initial solutions and planning them.
+\section{Contributions} \label{sec:conc-contributions}
 
-This dissertation proposes to create a real-time web application to allow users to input sports events' updates while featuring an offline mode and automatic conflict resolution whenever possible. Throughout the document, three main areas were outlined: \textit{Offline Availability}, \textit{Conflict Resolution}, \textit{Reputation System}. 
+The implementation of a web application to solve the problems identified in Chapter~\ref{chap:problem} was successfully completed, resulting in a minimal production-ready product, which is, at the moment of writing, used to cover Euro2020 matches by official ZeroZero journalists. It features the real-time coverage of a match, together with the conflict resolution required to keep the data consistent. It features offline resilience, by synchronizing pending information as soon as possible. Additionally, a reputation system was developed, in order to aid the conflict resolution algorithm in case of tie. All of this was build by using a microservice architecture which was comprised of the following services:
+\begin{description}
+    \item[Reverse Proxy] Routes requests for the respective service, based on the requested endpoint;
+    \item[ZeroZero API Proxy] A mini-proxy that routes requests for the ZeroZero API, hiding secret values such as the API Key;
+    \item[ Conflict Handlers Orchestrator] Manages the active handlers for each live match, and provides endpoints to start, stop and cleanup stale handlers;
+        \begin{description}
+            \item[Conflict Handler] Controlled by the orchestrator, listens to changes to the respective match CouchDB database, and resolves conflicts, according to the specified rules;
+        \end{description}  
+    \item[Reputation Service] Manages the users reputation, calculated based on the interactions during live matches on ZeroZero Live;
+    \item[Web Application (Frontend)] Frontend for users to interact with the application, by allowing them to follow a match passively, or cover it by inserting events, on real-time;
+    \item[CouchDB] The document database used for ZeroZero Live's events storage, allowing conflict detection and resolution;
+    \item[MongoDB] The database to store user reputation information.
+\end{description}
 
-Regarding \textit{Offline Availability}, the application will require some local storage to keep users' work when they don't have internet access. Multiple solutions were analyzed, and \textit{localStorage} seemed the best fit as it is widely available on browsers and provides plenty of storage space.
+\section{Conclusions} \label{sec:conc-results}
+The research goal of this work was to study the impact of automatic conflict resolution on the user experience regarding a real-time multi-user crowdsourcing environment. Early research showed that users find that the user experience is better on environments that have automatic conflict resolution, when compared to an environment that does not have it. Research also showed that conflicts are not as common as expected, when following a game through a video stream --- TV or over the internet, not live. Nevertheless, users were content with the application and would use the application again, independently of the automatic conflict resolution feature being active or not. The fact that the application is currently being used in production validates its use case and entails a minimum level of quality and usability. Finally, it was shown that the product has two types of users, with different use cases: while the journalists require API synchronization and stability as they input a higher number of events, the casual users are more vulnerable to conflicts and rely more on an easier input experience, due to their lack of knowledge over the range of existing events.
 
-Concerning \textit{Conflict Resolution}, multiple strategies can be used, most notably OT and CRDT. One of the first things to do in the project will be to try both of them and analyze which works best, based on the experience.
+\section{Difficulties} \label{sec:difficulties}
+During the development of this project, some difficulties appeared and were tackled as best as possible. Some were solved, and others are left as future work in Section~\ref{sec:conc-future-work}. Regarding the big picture of the project, the COVID-19 pandemic meant that there were not many live matches to cover in person, which caused barriers in executing experiments with casual users. Those were mitigated by researching during TV-transmitted games, to mitigate the lack of live in-person coverages. Regarding the project itself, the synchronization with the existing ZeroZero API, in terms of storing match events was one of the hardest problems to solve, as it meant the application had two sources of truth, that must be consistent with one another at all times. Currently, that consistency is only guaranteed from ZeroZero Live to ZeroZero API --- insert, edit and delete operations on ZeroZero Live are reflected on ZeroZero --- but only insert operations on ZeroZero API will be propagated to ZeroZero Live.
 
-As for the \textit{Reputation System}, some rules were analyzed, such as \say{Should the reputation value be available for everyone to see?}, or \say{When to update the reputation values?}. Every system is different, and different strategies must be tried and evaluated on the user base. However, a system based on time dynamics and \say{higher-reputation-counts-more} is proposed, due to the research shown in Chapter~\ref{chap:sota}.
+\section{Future Work} \label{sec:conc-future-work}
 
-All of these decisions might impact UX, and we intend to study the effects of our design decisions on application usage. This is accounted for in the project planning.
+Due to the core design of the conflict detection, some types of conflicts are not detected. Such is the case with different minute conflicts. It is very plausible for users to input the same event on consecutive minutes, but currently, since the generated documents' $\_id$s will be different, they won't conflict. This type of check must occur on insert, and the handler must check for events with the minute within a delta. If they are similar enough, or follow some to be defined criteria, they will be classified as conflicts (by re-inserting them as a document with the same id as some pivot document, regardless of the document's original minute). Regarding the reputation system, not enough tests were conducted in order to attest which is the best configuration in terms of constant values. That research would improve the system and provide insights on generic reputation systems' behavior. Finally, more tests should be done in order to fully validate the hypothesis that conflict resolution really benefits the user experience on a real-time multi-user crowdsourcing environment.
 
-\section{Expected Contributions}
-At the end of this work, this project can have two main contributions. First is the actual application, which will allow many sports fans to connect to their local teams and follow their games with the community. Second, work regarding the testing of a multi-user real-time application can be useful for anyone developing such an application. I intend to create a tool on top of existing testing frameworks, allowing easier testing of these applications.
 
 \vspace*{12mm}
