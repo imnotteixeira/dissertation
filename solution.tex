@@ -14,7 +14,7 @@ Additionally, Docker Compose\footnote{https://docs.docker.com/compose/} is used 
 
 \lstset{float=H}
 
-\begin{lstlisting}[label={lst:docker-compose-definition},caption={docker-compose.yml services definition}]
+\begin{lstlisting}[label={lst:docker-compose-definition},caption={docker-compose.yml file --- Docker services definition}]
     version: '3.1'
     services:
         apacheproxy:
@@ -244,7 +244,7 @@ For those that need to be synchronized, they are inserted as normal documents, a
 \begin{figure}[h]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.9\textwidth]{sync-api-flow.pdf}
+        \includegraphics[width=\textwidth]{sync-api-flow.pdf}
         \caption{Synchronization of events from ZeroZero API into ZeroZero Live database}
         \label{fig:sync-from-api-flux}
     \end{center}
@@ -350,7 +350,7 @@ The application is built with React and is essentially a \textit{Single Page App
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-login.png}
+        \includegraphics[width=\textwidth]{zerozerolive-login.png}
         \caption{Login page of zerozero.live}
         \label{fig:zerozerolive-login}
     \end{center}
@@ -359,7 +359,7 @@ The application is built with React and is essentially a \textit{Single Page App
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-home.png}
+        \includegraphics[width=\textwidth]{zerozerolive-home.png}
         \caption{Homepage of zerozero.live}
         \label{fig:zerozerolive-home}
     \end{center}
@@ -368,7 +368,7 @@ The application is built with React and is essentially a \textit{Single Page App
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-search.png}
+        \includegraphics[width=\textwidth]{zerozerolive-search.png}
         \caption{Search page of zerozero.live}
         \label{fig:zerozerolive-search}
     \end{center}
@@ -377,7 +377,7 @@ The application is built with React and is essentially a \textit{Single Page App
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-history.png}
+        \includegraphics[width=\textwidth]{zerozerolive-history.png}
         \caption{History page of zerozero.live}
         \label{fig:zerozerolive-history}
     \end{center}
@@ -386,7 +386,7 @@ The application is built with React and is essentially a \textit{Single Page App
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-teams.png}
+        \includegraphics[width=\textwidth]{zerozerolive-teams.png}
         \caption{Team selection for a match in zerozero.live}
         \label{fig:zerozerolive-teams}
     \end{center}
@@ -397,7 +397,7 @@ The majority of the frontend application was already built before. Figures~\ref{
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-comments.png}
+        \includegraphics[width=\textwidth]{zerozerolive-comments.png}
         \caption{Comments page for a match in zerozero.live}
         \label{fig:zerozerolive-comments}
     \end{center}
@@ -423,7 +423,7 @@ At the same time, it will load the match information from the ZeroZero API, incl
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-event-select.png}
+        \includegraphics[width=\textwidth]{zerozerolive-event-select.png}
         \caption{Event selection}
         \label{fig:zerozerolive-event-select}
     \end{center}
@@ -432,7 +432,7 @@ At the same time, it will load the match information from the ZeroZero API, incl
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-event-player-select.png}
+        \includegraphics[width=\textwidth]{zerozerolive-event-player-select.png}
         \caption{Event's player selection}
         \label{fig:zerozerolive-event-player-select}
     \end{center}
@@ -446,7 +446,7 @@ Regarding the event operations, namely insert, edit, and delete, the process is 
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-conflict-event.png}
+        \includegraphics[width=\textwidth]{zerozerolive-conflict-event.png}
         \caption{Event with a conflict pending resolution}
         \label{fig:zerozerolive-conflict-event}
     \end{center}
@@ -455,7 +455,7 @@ Regarding the event operations, namely insert, edit, and delete, the process is 
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.7\textwidth]{zerozerolive-conflict-resolution.png}
+        \includegraphics[width=\textwidth]{zerozerolive-conflict-resolution.png}
         \caption{Event conflict resolution interface}
         \label{fig:zerozerolive-conflict-resolution}
     \end{center}
@@ -468,7 +468,7 @@ In the case of conflicts, Figure~\ref{fig:insert_doc_seq_conf} shows that the se
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.8\textwidth]{insert_doc_seq_noconf.pdf}
+        \includegraphics[width=\textwidth]{insert_doc_seq_noconf.pdf}
         \caption{Sequence diagram representing the flow when inserting an event without conflicts}
         \label{fig:insert_doc_seq_noconf}
     \end{center}
@@ -477,7 +477,7 @@ In the case of conflicts, Figure~\ref{fig:insert_doc_seq_conf} shows that the se
 \begin{figure}[ht]
     \begin{center}
         \leavevmode
-        \includegraphics[width=0.8\textwidth]{insert_doc_seq_conf.pdf}
+        \includegraphics[width=\textwidth]{insert_doc_seq_conf.pdf}
         \caption{Sequence diagram representing the flow when inserting an event with conflicts}
         \label{fig:insert_doc_seq_conf}
     \end{center}
