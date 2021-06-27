@@ -109,7 +109,7 @@ In that paper, they define groupware systems as multi-user (i.e.,\ composed of t
 
 Real-time groupware systems have the following characteristics:
 
-\begin{itemize}
+\begin{description}
     \item[\textbf{Highly interactive}] short response times;
     \item[\textbf{Real-time}] notification times should be close to the response times;
     \item[\textbf{Distributed}] they should work even if the participants are connected in different machines and networks on the internet;
@@ -117,7 +117,7 @@ Real-time groupware systems have the following characteristics:
     \item[\textbf{\textit{Ad Hoc}}] participants don't follow a script, it is therefore impossible to know what is the information they are trying to access beforehand;
     \item[\textbf{Focused}] generally users will be trying to access the same data, generating a high degree of access conflicts;
     \item[\textbf{External Channel}] participants are often connected among them via an external channel such as an audio or video communication tool.
-\end{itemize}
+\end{description}
 
 A groupware system model is then defined as being formed by a set of sites and operators. Sites consist of a site process (i.e.,\ a user's unique session), a site object (i.e.,\ the data being read and modified), and a unique site identifier. Operators are the set of operations available for users to apply to the site objects. The goal is to maintain consistency among all the site objects at all times. The site process performs three kinds of activities: \textbf{operation generation}, where the user generates an operation to be applied to the site objects. The site will then encapsulate the action in an operation request to be broadcast to all other sites; \textbf{operation reception}, where an operation is received from another site; \textbf{operation execution}, where an operation is executed on the local site object. The model further assumes that the number of sites is constant, messages are received exactly once, without error, and that it is impossible to execute an action before it is generated.
 
