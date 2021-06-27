@@ -10,11 +10,62 @@ This section describes the general architecture of the system. It is composed of
 
 All of these services are managed using Docker\footnote{https://www.docker.com/}. Each service is built within a Docker Container, allowing it to be easy deployed and replicated across machines for scalability and fault tolerance. It also ensures that every deployment is identical, no matter the host machine and environment it is deployed on.
 
-Additionally, Docker Compose\footnote{https://docs.docker.com/compose/} is used to define how the different containers in a multi-container application should interact with each other, allowing us to start the application as one entity, instead of multiple isolated containers. It conveniently provides an DNS so that containers can reach each other by their service name.
+Additionally, Docker Compose\footnote{https://docs.docker.com/compose/} is used to define how the different containers in a multi-container application should interact with each other, allowing us to start the application as one entity, instead of multiple isolated containers. It conveniently provides an internal DNS so that containers can reach each other by their service name. Listing~\ref{list:conflict-resolution-strategies-frontend} shows the configuration file for the different docker services. Each service has a unique name, e.g., \say{apacheproxy}, \say{frontend}, and fields configuring its deployment. The build property specifies the location of the Dockerfile associated with the service image; the ports are defined in \verb+<Host Port>:<Container Port>+ format, and map to which port on the host --- i.e., the machine that is running docker --- the services should listen. Additional properties such as \say{restart} configure the behavior on failure, and storage containers, such as the \say{couchdb} and \say{mongo}, are configured to have data volumes, so that when the container is shut down the data is preserved on the host machine, so that it can be recovered later when it restarts. The \say{depends\_on} property makes sure that the service on which some service depends, is running when the dependent service is running.
+
+\lstset{float=H}
+
+\begin{lstlisting}[label={lst:docker-compose-definition},caption={docker-compose.yml services definition}]
+    version: '3.1'
+    services:
+        apacheproxy:
+            build: apache-reverse-proxy/
+            restart: always
+            ports: 
+                - "80:80"
+        frontend: 
+            build: .
+            ports: 
+                - "5000:80"
+        apiproxy: 
+            build: api/
+            ports: 
+                - "5001:80"
+        conflicthandlerservice:
+            build: conflict-handler-service/
+            restart: always
+            ports:
+                - "5002:80"
+            depends_on: 
+                - couchdb
+        reputationservice:
+            build: reputation-service/
+            restart: always
+            ports:
+                - "5003:80"
+            depends_on: 
+                - mongo
+        couchdb:
+            build: couchdb
+            environment:
+                - COUCHDB_USER=***
+                - COUCHDB_PASSWORD=***
+            ports:
+                - "5984:5984"
+            volumes: 
+                - ./couchdb-data:/opt/couchdb/data
+        mongo:
+            image: mongo
+            ports:
+                - "27017:27017"
+            volumes: 
+                - ./mongodb-data:/data/db
+\end{lstlisting}
+
 
 Finally, a microservice architecture promotes isolation and independence of services, which in turn allows for easier development and testing. Different teams can work on each service, which has a single purpose, and they only need to agree on the interface and how they can communicate between them.
 
-\begin{figure}[t]
+
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-arch.pdf}
@@ -89,8 +140,6 @@ There are two concepts to understand going forward: events, and documents. Event
 \end{description}
 
 Regarding conflict resolution, the main fields to take into account are the $\_id$ and $\_rev$. A more detailed explanation is presented below on how these fields are used to detect and resolve conflicts between two documents.
-
-{\Huge ADD event types to annex}
 
 \subsection{Conflict Handler}
 
