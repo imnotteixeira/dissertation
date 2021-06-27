@@ -104,6 +104,17 @@
 %% Rotate images (for big horizontal)
 \usepackage{rotating}
 
+\usepackage{placeins} % Prevent images from being placed outside of their section
+
+\let\Oldsection\section
+\renewcommand{\section}{\FloatBarrier\Oldsection}
+
+\let\Oldsubsection\subsection
+\renewcommand{\subsection}{\FloatBarrier\Oldsubsection}
+
+\let\Oldsubsubsection\subsubsection
+\renewcommand{\subsubsection}{\FloatBarrier\Oldsubsubsection}
+
 %% Uncomment to create an index (at the end of the document)
 %\makeindex
 

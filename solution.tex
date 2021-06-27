@@ -6,7 +6,7 @@ First, the general architecture is described, presenting the multiple components
 
 \section{General Services Architecture}
 
-This section describes the general architecture of the system. It is composed of multiple microservices, each handling a specific part of the problem. The main services are the ones dealing with the frontend application --- the web application itself ---, the conflict handling, and the user reputation. Additional services are built in order to achieve a functional whole, and they will be described below. Figure~\ref{fig:services-arch} shows the system architecture design and how the services connect to one another.
+This section describes the general architecture of the system. It is composed of multiple microservices, each handling a specific part of the problem. The main services are the ones dealing with the frontend application --- the web application itself ---, the conflict handling, and the user reputation\hyphenation{re-pu-ta-tion}. Additional services are built in order to achieve a functional whole, and they will be described below. Figure~\ref{fig:services-arch} shows the system architecture design and how the services connect to one another. Listing~\ref{lst:docker-compose-definition} contains all the configured services, including proxies and helper services.
 
 All of these services are managed using Docker\footnote{https://www.docker.com/}. Each service is built within a Docker Container, allowing it to be easy deployed and replicated across machines for scalability and fault tolerance. It also ensures that every deployment is identical, no matter the host machine and environment it is deployed on.
 
@@ -347,7 +347,7 @@ The last component, and arguably the most important --- How would users use the 
 
 The application is built with React and is essentially a \textit{Single Page Application} (SPA), but regardless of the name, the application provides multiple interfaces, or pages. It doesn't work like the usual multi-page web application, since there is indeed only one page being served --- index.html --- however, the JavaScript, namely the React Router package, handles the routing and the URLs, by rendering different component trees based on the URL, and thus emulating a multi-page setup.
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-login.png}
@@ -356,7 +356,7 @@ The application is built with React and is essentially a \textit{Single Page App
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-home.png}
@@ -365,7 +365,7 @@ The application is built with React and is essentially a \textit{Single Page App
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-search.png}
@@ -374,7 +374,7 @@ The application is built with React and is essentially a \textit{Single Page App
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-history.png}
@@ -383,7 +383,7 @@ The application is built with React and is essentially a \textit{Single Page App
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-teams.png}
@@ -394,7 +394,7 @@ The application is built with React and is essentially a \textit{Single Page App
 
 The majority of the frontend application was already built before. Figures~\ref{fig:zerozerolive-login}, \ref{fig:zerozerolive-home}, \ref{fig:zerozerolive-search}, \ref{fig:zerozerolive-history} were mostly untouched during the development of this work, as they are of no interest to the real-time multi-user collaboration problem this work addresses. Figure~\ref{fig:zerozerolive-teams} shows the interface to pick the roster of each team. There were no major changes to it apart from fixing an issue where users could not change pages too fast, as it might not submit their information correctly.
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-comments.png}
@@ -403,7 +403,7 @@ The majority of the frontend application was already built before. Figures~\ref{
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=0.3\textwidth]{zerozerolive-comments-mobile.jpg}
@@ -420,7 +420,7 @@ Then, it tries to sync any pending information that is stored locally to the rem
 
 At the same time, it will load the match information from the ZeroZero API, including the selected rosters, available event types, score, match time and state and substituted players. This is important in order to load the players correctly when choosing the player for the inputted event. This information is refreshed every 30 seconds.
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-event-select.png}
@@ -429,7 +429,7 @@ At the same time, it will load the match information from the ZeroZero API, incl
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-event-player-select.png}
@@ -443,7 +443,7 @@ As was previously mentioned, a big part of this project is the synchronization w
 %events interactions(insert, edit delete) (to local then remote)
 Regarding the event operations, namely insert, edit, and delete, the process is similar to each of them. A document is pushed to the local database, which makes it show on the UI for the user. Then it is synchronized to the remote database which, due to the replication listener will make it show on other users' machines as well, as soon as it replicates to their local databases. It may happen that during these replications a conflict arises. In those cases, the conflict icon is shown on the event, and the user can resolve the conflict after clicking there and examining the solution candidates. Figure~\ref{fig:zerozerolive-conflict-resolution} shows the conflict resolution interface, where the user can select a \say{winner} event, or choose to keep all events in the match. The resolutions strategies were already discussed above, in Section~\ref{list:conflict-resolution-strategies-frontend}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-conflict-event.png}
@@ -452,7 +452,7 @@ Regarding the event operations, namely insert, edit, and delete, the process is 
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{zerozerolive-conflict-resolution.png}
@@ -465,7 +465,7 @@ Figure~\ref{fig:insert_doc_seq_noconf} shows the sequence of operations when an 
 
 In the case of conflicts, Figure~\ref{fig:insert_doc_seq_conf} shows that the sequence of operations is slightly different when the conflict handler receives the conflicting document. It will resolve it first, before trying to synchronize anything. One thing to note is that the UI will receive the conflicting event while it is being resolved. For the users, it is as if someone is resolving a conflict really fast, as they might see the conflict appear and quickly be resolved, since the changes are always replicated to all listening clients. After resolving the conflict and receiving the updated document back, the conflict handler will behave like the previous example and synchronize the documents accordingly.
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{insert_doc_seq_noconf.pdf}
@@ -474,7 +474,7 @@ In the case of conflicts, Figure~\ref{fig:insert_doc_seq_conf} shows that the se
     \end{center}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \begin{center}
         \leavevmode
         \includegraphics[width=\textwidth]{insert_doc_seq_conf.pdf}
@@ -486,3 +486,6 @@ In the case of conflicts, Figure~\ref{fig:insert_doc_seq_conf} shows that the se
 \section{Time synchronization}
 
 An important part of a real-time application is the time synchronization between users and the server itself. In this application this is done by clients fetching the game start time from the ZeroZero API, and calculating the game time locally. It has a big problem, as we eventually found out, since clients may not be synchronized with the server themselves. A similar scenario happened inside ZOS, while we were testing the application. Some of the computers in the office had their clocks offset by a couple minutes in relation to the server serving the application. This resulted in a shift on the match minute they were seeing. This happened since the match clock is calculated based on the start time specified on the server and the current client time. In order to fix this problem, and any similar issues that can happen for users in different timezones, an offset correction value was added. The clients now send their local time when requesting the match information, and the server will return an offset in relation to its own time, which clients can use to fix the clock calculation, and make sure all are synchronized, independently of their local times.
+
+\section{Summary}
+In summary, a microservice architecture was used to build the application to solve the problem defined in Chapter~\ref{chap:problem}. In order to organize the deployment and treat the whole system as a unit instead of managing all the microservices individually, Docker Compose was used. In order to allow multiple services to be reached through the same domain, a reverse proxy service was developed, which routed the requests to the different services based on the used endpoint. In order to deal with conflicts detection and resolution, CouchDB was used, which has these features built-in to its design, while allowing an easy replication and offline usage, by using its local counterpart, PouchDB. Additionally, a reputation HTTP server was developed to handle the user reputation, which takes into account the users' reputations in order to have a dynamic influence on each others' inputs, as well as a decay of reputation over time, if users become inactive. All of these features were visible to the user through the web application frontend, which allowed for match coverage, by selecting the teams' rosters and events inputting, describing what is happening in real time. It further allows for manual conflict resolution when the automatic resolver chooses not to resolve the conflict.
