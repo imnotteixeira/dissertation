@@ -148,8 +148,24 @@ As previously noted, the Conflict Handler will help resolve some existing confli
 This is a Node.js process that will use PouchDB to connect to the remote CouchDB and listen for changes. It has two main responsibilities:
 \begin{itemize}
     \item If the document does not have conflicts sync with ZeroZero API, by inserting, editing or deleting the event from their database, depending on the operation
-    \item If the document has conflicts, try to resolve them according to the specified rules, by either deleting the conflict and keeping the current winner, deleting the conflict and adding it \textit{after} the previous winner, to choose it as winner, or keeping both documents, by deleting the conflict and adding a replicated document with a unique suffix added to the id so that it won't conflict again.
+    \item If the document has conflicts, try to resolve them according to the specified rules, by either deleting the conflict and keeping the current winner, deleting the conflict and adding it \textit{after} the previous winner, to choose it as winner, or keeping both documents, by deleting the conflict and adding a replicated document with a unique suffix added to the id so that it won't conflict again (See Figure~\ref{graph:keep-both-resolution}).
 \end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance={15mm}, thick, main/.style = {draw, circle}] 
+      \node[main] (1) {1-a};
+      \node[main] (2) [below left of=1] {2-a};
+      \node[main] (3) [below right of=1] {2-b};
+      \node[main, label=below:{\small \_deleted=true}] (4) [below of=3] {3-b};
+      \node[main, label=right:{\small (same as 2-b, different document \_id)}] (5) [right of=4] {1-a};
+      \draw[->] (1) -- (2);
+      \draw[->] (1) -- (3);
+      \draw[->] (3) -- (4);
+  \end{tikzpicture} 
+  \caption[Resolving a conflict by keeping both revisions]{Resolving a conflict by keeping both revisions --- \say{2-a} conflicts with \say{2-b} initially, then \say{2-b} is deleted, and a new document with a unique \_id is inserted (on the right), same as the deleted revision \say{2-b}}
+  \label{graph:keep-both-resolution}
+  \end{figure}
 
 As it was mentioned earlier, all CouchDB documents have an $\_id$ and a $\_rev$ (as in \textit{revision}). When \textit{putting} a document --- CouchDB has a \textit{put} operation that allows insertions, edits and deletions, depending on the given argument --- if there is already an object with the same $\_id$, CouchDB will try to update it, however if the $\_rev$ does not match, a conflict is generated. For insertions, it only requires an object with at least an $\_id$ field. For edits, it requires the object with an $\_id$, referring to the document to be edited, and a $\_rev$, corresponding to the current revision of the document to be edited. For deletions, it requires the $\_id$, $\_rev$ and a $\_deleted$ field with a value of $true$, which is a special case of the edit operation. The deleted documents are not really removed from the database until a compaction operation\footnote{https://docs.couchdb.org/en/stable/maintenance/compaction.html} is performed to clean the deleted documents and older revisions are stripped, leaving only the necessary data required for conflict resolution operations.
 
