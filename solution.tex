@@ -415,45 +415,43 @@ Then, it tries to sync any pending information that is stored locally to the rem
 
 At the same time, it will load the match information from the ZeroZero API, including the selected rosters, available event types, score, match time and state and substituted players. This is important in order to load the players correctly when choosing the player for the inputted event. This information is refreshed every 30 seconds.
 
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-event-select.png}
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{.5\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{zerozerolive-event-select.jpg}
         \caption{Event selection}
         \label{fig:zerozerolive-event-select}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-event-player-select.png}
+    \end{subfigure}%
+    \begin{subfigure}[t]{.5\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{zerozerolive-event-player-select.jpg}
         \caption{Event's player selection}
         \label{fig:zerozerolive-event-player-select}
-    \end{center}
+    \end{subfigure}
+    \caption{ZeroZero Live --- Input interface}
 \end{figure}
 
 As was previously mentioned, a big part of this project is the synchronization with the ZeroZero API events. On startup, the application will check which event are on the API registry that are currently not on the ZeroZero Live database. If it finds any, it will try to synchronize them by inserting them in the local PouchDB database, and then replicating to the remote database. The complete algorithm is mentioned in more detail above, on Section~\ref{sec:api-sync}. 
 
 %events interactions(insert, edit delete) (to local then remote)
-Regarding the event operations, namely insert, edit, and delete, the process is similar to each of them. A document is pushed to the local database, which makes it show on the UI for the user. Then it is synchronized to the remote database which, due to the replication listener will make it show on other users' machines as well, as soon as it replicates to their local databases. It may happen that during these replications a conflict arises. In those cases, the conflict icon is shown on the event, and the user can resolve the conflict after clicking there and examining the solution candidates. Figure~\ref{fig:zerozerolive-conflict-resolution} shows the conflict resolution interface, where the user can select a \say{winner} event, or choose to keep all events in the match. The resolutions strategies were already discussed above, in Section~\ref{list:conflict-resolution-strategies-frontend}
+Regarding the event operations, namely insert, edit, and delete, the process is similar to each of them. A document is pushed to the local database, which makes it show on the UI for the user. Then it is synchronized to the remote database which, due to the replication listener will make it show on other users' machines as well, as soon as it replicates to their local databases. It may happen that during these replications a conflict arises. In those cases, the conflict icon is shown on the event (see Figure~\ref{fig:zerozerolive-conflict-event}), and the user can resolve the conflict after clicking there and examining the solution candidates. Figure~\ref{fig:zerozerolive-conflict-resolution} shows the conflict resolution interface, where the user can select a \say{winner} event, or choose to keep all events in the match. The resolutions strategies were already discussed above, in Section~\ref{list:conflict-resolution-strategies-frontend}
 
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-conflict-event.png}
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{.5\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{zerozerolive-conflict-event.jpg}
         \caption{Event with a conflict pending resolution}
         \label{fig:zerozerolive-conflict-event}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-conflict-resolution.png}
+    \end{subfigure}%
+    \begin{subfigure}[t]{.5\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{zerozerolive-conflict-resolution.jpg}
         \caption{Event conflict resolution interface}
         \label{fig:zerozerolive-conflict-resolution}
-    \end{center}
+    \end{subfigure}
+    \caption{ZeroZero Live --- Conflicts interface}
 \end{figure}
 
 Figure~\ref{fig:insert_doc_seq_noconf} shows the sequence of operations when an event is inserted on the frontend (Browser), when there is no conflict. First the document is created on the local database, which is then replicated to the remote database. Once the remote database receives a document, it will emit events for any listener, including the clients and the conflict handler which, when receiving a document without conflicts, will try to synchronize it to the ZeroZero API, by inserting it in this case. As was previously mentioned, it will then update the document by setting its \say{insert} field to $false$. That change will once again be propagated to all listening clients.
