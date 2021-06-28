@@ -1,4 +1,4 @@
-\chapter{Solution}\label{chap:solution}
+\chapter{Architecture and Implementation}\label{chap:solution}
 
 This chapter presents the solutions to the problems exposed previously. It explains the rationale behind them, as well as why they were preferred over their alternatives.
 
@@ -115,29 +115,36 @@ This will ensure that we have a basic conflict detection, however it can easily 
 
 To improve the experience, a conflict handler is needed, in order to automatically solve conflicts as best as possible.
 
-There are two concepts to understand going forward: events, and documents. Events are the instances of events, as used by the ZeroZero API, such as a \textit{Goal}, \textit{Own Goal}, or \textit{Big Scoring Opportunity}. These include the event type id, their category, some template text and a representative image to be rendered associated with it, among other fields. The complete list of events is present in Appendix~\ref{annex:api-events}. Documents is a wrapper on the API events, which are stored in the CouchDB database, and used on the ZeroZero Live exclusively. They are structured as follows:
+There are two concepts to understand going forward: events, and documents. Events are the instances of events, as used by the ZeroZero API, such as a \textit{Goal}, \textit{Own Goal}, or \textit{Big Scoring Opportunity}. These include the event type id, their category, some template text and a representative image to be rendered associated with it, among other fields. The complete list of events is present in Appendix~\ref{annex:api-events}. Documents are a wrapper on the API events, in order to be stored in the CouchDB database, and used on the ZeroZero Live exclusively. Their schema is defined in Table~\ref{table:document-schema}.
 
-\begin{description}
-    \item[\_id] the document id, used to detect conflicts, as explained above;
-    \item[\_rev] the document's revision, in order to provide the history level of the changes tree of this document $\_id$;
-    \item[timestamp] a UNIX timestamp to help sorting the events that are generated for the same match minute;
-    \item[id] the id of the corresponding event on the ZeroZero API, received on insert, and required to edit or delete this event from the API;
-    \item[fk\_jogo] the match id;
-    \item[equipa] the respective team's id;
-    \item[fk\_user] id of the user that generated the event;    
-    \item[fk\_jogador] id of the player the event refers to;    
-    \item[fk\_jogador\_out] id of the secondary player the event refers to (used in the substitution event);    
-    \item[minuto] the match minute;
-    \item[minuto\_extra] the extra minute, in case the event happened during injury time;
-    \item[texto] the event's text (after template interpolation)
-    \item[event\_id] the event type id;    
-    \item[fk\_live\_tpevent] the same as $event\_id$;
-    \item[ignore\_minuto] 1 if the minute should be ignored, 0 otherwise;
-    \item[categoria] the event's category;  
-    \item[vodafone\_clock\_time] a timestamp indicating the video mark when the event can be visualized;
-    \item[insert] flag indicating if the event should be inserted to the ZeroZero\hyphenation{ZeroZero} API;
-    \item[synced\_from\_api] flag indicating if this document came from a synchronization from the ZeroZero API, instead of being inserted by a user manually. 
-\end{description}
+\begin{table}
+    \centering
+    \caption{CouchDB document schema}
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Field}        & \textbf{Description} \\ \hline \hline
+        \_id & the document id, used to detect conflicts, as explained above \\ \hline
+        \_rev & the document's revision, in order to provide the history level of the changes tree of this document $\_id$ \\ \hline
+        timestamp & a UNIX timestamp to help sorting the events that are generated for the same match minute \\ \hline
+        id & the id of the corresponding event on the ZeroZero API, received on insert, and required to edit or delete this event from the API \\ \hline
+        fk\_jogo & the match id \\ \hline
+        equipa & the respective team's id \\ \hline
+        fk\_user & id of the user that generated the event     \\ \hline
+        fk\_jogador & id of the player the event refers to     \\ \hline
+        fk\_jogador\_out & id of the secondary player the event refers to (used in the substitution event)     \\ \hline
+        minuto & the match minute \\ \hline
+        minuto\_extra & the extra minute, in case the event happened during injury time \\ \hline
+        texto & the event's text (after template interpolation) \\ \hline
+        event\_id & the event type id     \\ \hline
+        fk\_live\_tpevent & the same as $event\_id$ \\ \hline
+        ignore\_minuto & 1 if the minute should be ignored, 0 otherwise \\ \hline
+        categoria & the event's category   \\ \hline
+        vodafone\_clock\_time & a timestamp indicating the video mark when the event can be visualized \\ \hline
+        insert & flag indicating if the event should be inserted to the ZeroZero\hyphenation{ZeroZero} API \\ \hline
+        synced\_from\_api & flag indicating if this document came from a synchronization from the ZeroZero API, instead of being inserted by a user manually  \\ \hline
+    \end{tabularx}
+    \label{table:document-schema}
+\end{table}
 
 Regarding conflict resolution, the main fields to take into account are the $\_id$ and $\_rev$. A more detailed explanation is presented below on how these fields are used to detect and resolve conflicts between two documents.
 
@@ -355,12 +362,12 @@ After calculating all the deltas for each interaction, they are marked as proces
     repIncrement = (1 - userRep) * avgDeltas;
 \end{equation}
 
-\begin{table}[h]
+\begin{table}
     \centering
     \caption{Reputation service constant values}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Constant}                   & \textbf{Value} \\ \hline
+        \textbf{Constant}                   & \textbf{Value} \\ \hline \hline
         Initial User Reputation             & 0.2 \\ \hline
         Base Input Reputation               & 0.01    \\ \hline
         Maximum Input Reputation Reward     & 0.05    \\ \hline
@@ -380,52 +387,7 @@ The last component, and arguably the most important --- How would users use the 
 
 The application is built with React and is essentially a \textit{Single Page Application} (SPA), but regardless of the nomenclature, the application provides multiple interfaces, or pages. It doesn't work like the usual multi-page web application, since there is indeed only one page being served --- index.html --- however, the JavaScript, namely the React Router package, handles the routing and the URLs, by rendering different component trees based on the URL, and thus emulating a multi-page setup.
 
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-login.png}
-        \caption{Login page of zerozero.live}
-        \label{fig:zerozerolive-login}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-home.png}
-        \caption{Homepage of zerozero.live}
-        \label{fig:zerozerolive-home}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-search.png}
-        \caption{Search page of zerozero.live}
-        \label{fig:zerozerolive-search}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-history.png}
-        \caption{History page of zerozero.live}
-        \label{fig:zerozerolive-history}
-    \end{center}
-\end{figure}
-
-\begin{figure}[h]
-    \begin{center}
-        \leavevmode
-        \includegraphics[width=\textwidth]{zerozerolive-teams.png}
-        \caption{Team selection for a match in zerozero.live}
-        \label{fig:zerozerolive-teams}
-    \end{center}
-\end{figure}
-
-The majority of the frontend application was already built before. Figures~\ref{fig:zerozerolive-login}, \ref{fig:zerozerolive-home}, \ref{fig:zerozerolive-search}, \ref{fig:zerozerolive-history} were mostly untouched during the development of this work, as they are of no interest to the real-time multi-user collaboration problem this work addresses. Figure~\ref{fig:zerozerolive-teams} shows the interface to pick the roster of each team. There were no major changes to it apart from fixing an issue where users could not change pages too fast, as it might not submit their information correctly.
+The majority of the frontend application was already built before. Figures~\ref{fig:zerozerolive-login}, \ref{fig:zerozerolive-home}, \ref{fig:zerozerolive-search}, \ref{fig:zerozerolive-history} represent interfaces that were mostly untouched during the development of this work, as they are of no interest to the real-time multi-user collaboration problem this work addresses. Figure~\ref{fig:zerozerolive-teams} shows the interface to pick the roster of each team. There were no major changes to it apart from fixing an issue where users could not change pages too fast, as it might not submit their information correctly.
 
 \begin{figure}[h]
     \begin{center}

@@ -61,12 +61,12 @@ A total of 12 participants were included in the experiment. They were divided in
 
 In order to record these metrics, a new microservice was developed to record them. It exposed a simple HTTP API and reused the same existing MongoDB instance used for the reputation system, creating a new collection to store the metrics, for easy inspection.
 
-\begin{table}[h]
+\begin{table}
     \centering
     \caption{Relation between number of events, participants and generated conflicts}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Metric}        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        \textbf{Metric}        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline \hline
         Number of Events       & 35 & 39 & 36 \\ \hline
         Number of Participants & 4  & 5  & 3  \\ \hline
         Number of Conflicts\footnotemark    & 3  & 1  & 0  \\ \hline
@@ -80,12 +80,12 @@ Table~\ref{table:num-events-participants-conflicts} shows the relation between t
 
 One can also note that the number of conflicts is higher on the environment where there was no automatic conflict resolution, as expected. However is not as high as expected --- only 8.6\% of the events conflicted. This can be explained by two factors: first, all users were watching the game remotely, i.e., on the television or through some video stream on the internet. These transmissions are subject to variable delays, when compared to the game happening in real time, which resulted in different users watching the game out of sync compared to each other. Additionally, although no user had any prior experience with the application, different users have different times to insert events. All of this results in some users inputting events slower than others, and if someone inputs the same event earlier --- which would result in a conflict --- they end up stopping their input and avoiding the conflict altogether. Another phenomenon that happened, still due to the reasons outlined above, was that the slower users would input the events after someone did, and inadvertedly overwrite them, since they had already received them at the moment of insertion, bypassing the conflicts.
 
-\begin{table}[h]
+\begin{table}
     \centering
     \caption{Conflict resolution times and user perception}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Metric}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        \textbf{Metric}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline \hline
         Number of Conflicts                    & 3  & 1  & 0  \\ \hline
         Average conflict resolution time (s)   & 92.7  & 0.7  & 0  \\ \hline
         Average perceived level of conflicts (1-5)     & 2  & 1.25  & 1  \\ \hline
@@ -93,7 +93,7 @@ One can also note that the number of conflicts is higher on the environment wher
     \label{table:num-conflicts-time-perception}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \begin{tikzpicture}
         \begin{axis} [ybar,xmin=0,xmax=90,xtick distance=10,
@@ -116,7 +116,7 @@ As it can be seen from the data on Table~\ref{table:num-conflicts-time-perceptio
 
 On figure~\ref{chart:conflicts-over-time}, one can notice that all of the conflicts happened on the first half, and most of them before the 30th minute. This confirms the idea that users are more active at the beginning of the match, especially considering that this match had many important events on the second half, including two goals, penalties and substitutions, which didn't lead to conflicts.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \begin{tikzpicture}
         \begin{axis} [ybar,xmin=0,xmax=90,xtick distance=10,
@@ -135,12 +135,12 @@ On figure~\ref{chart:conflicts-over-time}, one can notice that all of the confli
     \label{chart:conflicts-res-time-over-time}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}
     \centering
     \caption{Manual conflict resolution user evaluation}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Metric (1-5)}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        \textbf{Metric (1-5)}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline \hline
         Average "Easiness of conflict location"   & 4  & 4.75  & 5  \\ \hline
         Average "Easiness of conflict resolution"   & 3.5  & 4.75  & 5  \\ \hline
     \end{tabular}
@@ -149,12 +149,12 @@ On figure~\ref{chart:conflicts-over-time}, one can notice that all of the confli
 
 Figure~\ref{chart:conflicts-res-time-over-time} shows the resolution time of conflicts over match time. Ideally the value should be much lower --- no more than 10 seconds --- however it always exceeded the 40 seconds mark, which is confirmed by the average "Easiness of conflict location" and "Easiness of conflict resolution" metrics being lower in C1, when compared to E1 and E2, according to Table~\ref{table:conflicts-resolution-user-perception}. 
 
-\begin{table}[h]
+\begin{table}
     \centering
     \caption{User evaluation of the platform}
     \begin{tabular}{|l|l|l|l|}
         \hline
-        \textbf{Metric}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline
+        \textbf{Metric}                        & \textbf{C1} & \textbf{E1} & \textbf{E2} \\ \hline \hline
         Average "The platform allowed me cover the match without issues" (1-5)   & 3.5  & 5  & 4.7  \\ \hline
         \% "Would use again"   & 100\%  & 100\%  & 100\%  \\ \hline
     \end{tabular}

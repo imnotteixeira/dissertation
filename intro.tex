@@ -19,19 +19,19 @@ Parallel to this, we want to provide the best possible User Experience, since in
 
 This project will provide an approach to this problem, and the following sections provide more details on the project's key objectives.
 
-\section{Offline Availability} \label{sec:offline-avail-intro}
+\subsection*{Offline Availability} \label{sec:offline-avail-intro}
 
 As previously stated, internet connection in stadiums is poor most of the time. Thus, the users must have the option to interact with the application and synchronize once possible. This will obviously lead to data consistency issues (i.e.,\ two users report a goal, changing the result to \say{1-0} for example, but one of them is offline, so when it finally synchronizes, the result is already \say{3-2}, and it should not be overwritten.)
 
 More information on this topic is presented in Section~\ref{sec:offline-avail-sota}.
 
-\section{Conflict Resolution} \label{sec:conflict-res-intro}
+\subsection*{Conflict Resolution} \label{sec:conflict-res-intro}
 
 Another objective of the tool is to provide users with automatic conflict resolution when possible. Some strategies are depicted in the \textit{State of the Art} section, in Chapter~\ref{sec:conflict-res-sota}. Here, it is important to preserve the truth and the most up-to-date versions of data. In this scenario, there might not be a source of truth present to verify and validate all inputs, so other strategies must be used, such as agreement-based implicit voting --- if nobody questions a user's input, it must be true until stated otherwise.
 
 Additionally, the tool can use different strategies to solve conflicts automatically, thus improving the user experience (UX). More on this topic is available in Section~\ref{sec:conflict-res-sota}.
 
-\section{Reputation System} \label{sec:rep-sys-intro}
+\subsection*{Reputation System} \label{sec:rep-sys-intro}
 
 The third key-objective of the application will be the reputation system. Currently, there already exists a ranking concept, and a \say{trusted} user, which is the equivalent to the maximum reputation and should be considered the source of truth in case of conflict.
 
