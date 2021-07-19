@@ -611,7 +611,7 @@ Macro file lineno.sty for LaTeX: attach line numbers, refer to them.
 % altogether with the ~\@nobreak~ switch.
 %
 % Since (ltspace.dtx, v1.2p)[1996/07/26], the ~\@nobreaktrue~ does
-% it's job globally.  We need to do it locally here.
+% it is job globally.  We need to do it locally here.
 
 \def\LineNoTest{%
   \let\@@par\@@@par
@@ -2969,7 +2969,7 @@ Macro file lineno.sty for LaTeX: attach line numbers, refer to them.
 % independantly of their actual code. 
 % However, ~\vadjust~ should be the primitive again after 
 % execution of the command. So the ~\global\let...~ may be used 
-% only if it's guaranteed that a ~\vadjust~ is near.---(UL) 
+% only if it is guaranteed that a ~\vadjust~ is near.---(UL) 
 % Sure? In line numbering mode, probably each ~\vadjust~ 
 % coming from a \LaTeX\ command should be ~\PostponeVadjust~. 
 % ~\marginpar~s and floats seem to be the only cases which 
@@ -3343,7 +3343,7 @@ Macro file lineno.sty for LaTeX: attach line numbers, refer to them.
 % [|\theLineNumber] (for wizards)                                       \ \par
 %     This macro is called for printing a ~\newlabel~ entry
 %     to the aux-file.  Its definition depends on the mode.
-%     For running line numbers it's just ~\thelinenumber~,
+%     For running line numbers it is just ~\thelinenumber~,
 %     while in pagewise mode, the page offset subtraction
 %     is done in here.
 %                                                                        \item

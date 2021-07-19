@@ -9,10 +9,8 @@ The implementation of a web application to solve the problems identified in Chap
 \begin{description}
     \item[Reverse Proxy] Routes requests for the respective service, based on the requested endpoint;
     \item[ZeroZero API Proxy] A mini-proxy that routes requests for the ZeroZero API, hiding secret values such as the API Key;
-    \item[ Conflict Handlers Orchestrator] Manages the active handlers for each live match, and provides endpoints to start, stop and cleanup stale handlers;
-        \begin{description}
-            \item[Conflict Handler] Controlled by the orchestrator, listens to changes to the respective match CouchDB database, and resolves conflicts, according to the specified rules;
-        \end{description}  
+    \item[Conflict Handlers Orchestrator] Manages the active handlers for each live match, and provides endpoints to start, stop and cleanup stale handlers;
+    \item[Conflict Handler] Controlled by the orchestrator, listens to changes to the respective match CouchDB database, and resolves conflicts, according to the specified rules;
     \item[Reputation Service] Manages the users reputation, calculated based on the interactions during live matches on ZeroZero Live;
     \item[Web Application (Frontend)] Frontend for users to interact with the application, by allowing them to follow a match passively, or cover it by inserting events, on real-time;
     \item[CouchDB] The document database used for ZeroZero Live's events storage, allowing conflict detection and resolution;

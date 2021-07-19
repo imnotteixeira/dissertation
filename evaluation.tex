@@ -5,7 +5,7 @@ There are two types of target users in this platform. The first are the current 
 
 \section{Methodology}
 
-In order to better understand how the user is interacting with the application and pinpoint some aspects that might be worth improving, we intend to measure some aspects of the interaction. Next are some proposed metrics, which are relevant to this study. They are divided on their type for clearer understanding.
+In order to understand how the user is interacting with the application and pinpoint some aspects that might be worth improving, some aspects of the interaction were measured. Next are the used metrics, relevant to this study.
 
 \begin{enumerate}
     \item Performance metrics:
@@ -17,7 +17,7 @@ In order to better understand how the user is interacting with the application a
     their level of agreement. The statement may be positive (e.g.,\ “The terminology used in this interface is clear”) or negative (e.g., “I found the navigation options confusing”). Usually a five-point scale of agreement like the following is used: 1. Strongly disagree 2. Disagree 3. Neither agree nor disagree 4. Agree 5. Strongly agree}, when appropriate:
     \begin{enumerate}
         \item The tool allowed the user to narrate the game without issues
-        \item The user considered the number of conflicts... (1 - low; 5 - high)
+        \item The user considered the number of conflicts...
         \item The user believed the events to correspond to the match's truth 
         \item The conflicts were easily to locate
         \item The conflicts were easy to solve \\
@@ -41,13 +41,11 @@ When asked about the number of conflicts, journalists classified the number as v
 
 This validates the product on the journalist use-case. The tool allows CRUD\footnote{CRUD stands for Create-Read-Update-Delete, the four basic data-related operations a system can provide} operations and synchronizes to and from the ZeroZero's API, allowing them to insert, edit and delete events regarding a live match, which can be followed both on ZeroZero and on ZeroZero Live.
 
-Next, the casual user's experience was evaluated, the analysis as available in the next section.
-
 \section{The Casual User Use-Case}
 % work in groups, crowdsourcing, in theory more conflicts
 % portugal france experiment
 
-Casual users have a slightly different use-case. While they too rely on CRUD operations in order to insert, edit and delete events, it's expected that they don't rely as much on ZeroZero API synchronization, as they will follow the game directly on ZeroZero Live. Additionally, a bigger difference relies on the number of participants per match, which is expected to be higher, contributing to the crowdsourcing nature of the tool. This raises the probability of event conflicts happening, which adds relevance to this work, regarding the automatic conflict resolution. In this section, the system will be evaluated in that regard.
+Casual users have a slightly different use-case. While they too rely on CRUD operations in order to insert, edit and delete events, it is expected that they don't rely as much on ZeroZero API synchronization, as they will follow the game directly on ZeroZero Live. Additionally, a bigger difference relies on the number of participants per match, which is expected to be higher, contributing to the crowdsourcing nature of the tool. This raises the probability of event conflicts happening, which adds relevance to this work, regarding the automatic conflict resolution. In this section, the system will be evaluated in that regard.
 
 In order to prepare this type of experiments, a clone of ZeroZero Live was used. This clone was different in terms of features in order to focus on the conflict resolution. It also had no connection to the ZeroZero API, in terms of inserting events or making any changes to the teams for example. Additionally, authentication was not required which allowed for and experiment on a live relevant match, with no side effects on the ZeroZero platform. The chosen match was Portugal vs. France on the 23rd of June, regarding the Euro2020 group stage. Being a game involving Portugal's team, a long time rival as France, and the last match of the group stage, which Portugal could fail to pass, it was very important and many people would watch it, which meant many people to cover it and experiment the tool.
 
@@ -114,7 +112,7 @@ One can also note that the number of conflicts is higher on the environment wher
 
 As it can be seen from the data on Table~\ref{table:num-conflicts-time-perception}, in experiment C1 --- the control, where no automated conflict resolution was present --- there were 3 reported conflicts, which took, on average, 92.7 seconds to resolve. As expected, according to the questionnaire, the users perceived a higher amount of conflicts, although they still reported the level of conflicts to be only 2 points out of 5. On the other experiments, this value is lower --- 1 being the minimum --- which makes sense considering the amount of conflicts --- there was only a conflict in experiment E1, and it was automatically resolved by the platform, resulting in a resolution time of only 0.7 seconds.
 
-On figure~\ref{chart:conflicts-over-time}, one can notice that all of the conflicts happened on the first half, and most of them before the 30th minute. This confirms the idea that users are more active at the beginning of the match, especially considering that this match had many important events on the second half, including two goals, penalties and substitutions, which didn't lead to conflicts.
+On Figure~\ref{chart:conflicts-over-time}, one can notice that all of the conflicts happened on the first half, and most of them before the 30th minute. This confirms the idea that users are more active at the beginning of the match, especially considering that this match had many important events on the second half, including two goals, penalties and substitutions, which didn't lead to conflicts.
 
 \begin{figure}
     \centering
@@ -163,8 +161,8 @@ Figure~\ref{chart:conflicts-res-time-over-time} shows the resolution time of con
 
 Finally, Table~\ref{table:user-platform-evaluation} shows the metrics used to evaluate the UX. As expected, the environment where conflicts were not automatically resolved, the users reported a lower satisfaction value --- 3.5 out of 5 --- nevertheless, all of them answered yes when questioned if they would use the application again. This might be due to the application purpose and idea itself, and not so much on the current implementation or issues.
 
-It also worth to note that these experiments were not made with a significant amount of users, so the results may be biased towards this specific match or set of users, and this evaluation should take this into account.
+It is also worth to note that these experiments were not made with a significant amount of users, so the results may be biased towards this specific match or set of users, and this evaluation should take this into account.
 
 \section{Summary}
 
-In summary, we can say that the application reached a minimum level of quality in order to reach the production staged, and it was use to cover some important matches such is the case of the Euro2020 Group Stage. Journalists found it to be an improvement in UX when compared to the older platform, which was one of the goals. When considering casual users, where the real-time and conflict handling features are more relevant, we noted that the experience improved with the conflict resolution feature, when compared to an environment without it. The conflict resolution times were still too high, which may be due to the fact that the users covering the match were not as involved in it as a professional journalist would be, and would take longer to detect a conflict in the UI, since they would be watching the match instead, as the quality of the coverage is not their main focus. This confirms the hypothesis that \say{A conflict-resolution system improves the user experience in a real-time multi-user crowdsourcing environment}, however, there are still not enough users to validate it strongly.
+In summary, we can say that the application reached a minimum level of quality in order to reach the production staged, and it was use to cover some important matches such is the case of the Euro2020 Group Stage. Journalists found it to be an improvement in UX when compared to the older platform, which was one of the goals. When considering casual users, where the real-time and conflict handling features are more relevant, we noted that the experience improved with the conflict resolution feature, when compared to an environment without it. The conflict resolution times were still too high, which may be due to the fact that the users covering the match were not as involved as a professional journalist would be, and would take longer to detect a conflict in the UI, since they would be watching the match instead, as the quality of the coverage is not their main focus. This confirms the hypothesis that \say{A conflict-resolution system improves the user experience in a real-time multi-user crowdsourcing environment}, however, there are still not enough users to validate it strongly.

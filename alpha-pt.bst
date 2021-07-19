@@ -735,7 +735,7 @@ FUNCTION {make.href}
   if$
 }
 
-% If inlinelinks is true, then format.url should be a no-op, since it's
+% If inlinelinks is true, then format.url should be a no-op, since it is
 % (a) redundant, and (b) could end up as a link-within-a-link.
 FUNCTION {format.url}
 { inlinelinks #1 = url empty$ or
